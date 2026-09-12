@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { shopDataContext } from '../Context/ShopContext'
-import RelatedProduct from '../component/relatedProducts'
+import RelatedProduct from "../component/RelatedProducts";
 import { FaHeart } from "react-icons/fa";
 
 function ProductDetail() {
