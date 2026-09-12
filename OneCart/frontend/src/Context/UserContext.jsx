@@ -1,12 +1,31 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
 import { authDataContext } from "./AuthContext";
 import axios from "axios";
 
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
-  const [userData, setUserData] = useState("");
+  // ================= USER DATA =================
+
+  const [userData, setUserData] = useState(null);
+
+  // ================= LOADING =================
+
+  const [loading, setLoading] = useState(true);
+
+  // ================= AUTH CONTEXT =================
+
   const { serverUrl } = useContext(authDataContext);
+
+  // ======================================================
+  // GET CURRENT USER
+  // ======================================================
 
   const getCurrentUser = async () => {
     try {
@@ -18,21 +37,41 @@ function UserContext({ children }) {
       );
 
       setUserData(result.data);
-      console.log(result.data);
+
+      console.log("Current User:", result.data);
+
+      return result.data;
     } catch (error) {
-      setUserData("");
-      console.log(error);
+      setUserData(null);
+
+      console.log(
+        "Get Current User Error:",
+        error.response?.data || error.message
+      );
+
+      return null;
+    } finally {
+      setLoading(false);
     }
   };
+
+  // ======================================================
+  // CHECK USER WHEN APP STARTS
+  // ======================================================
 
   useEffect(() => {
     getCurrentUser();
   }, []);
 
+  // ======================================================
+  // CONTEXT VALUE
+  // ======================================================
+
   const value = {
     userData,
     setUserData,
     getCurrentUser,
+    loading,
   };
 
   return (

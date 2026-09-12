@@ -20,55 +20,60 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
 
-    try {
-      const result = await axios.post(
-        serverUrl + "/api/login",
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+  try {
+    const result = await axios.post(
+      serverUrl + "/api/login",
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
-      console.log(result.data);
-      getCurrentUser();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    console.log(result.data);
 
-  const googleLogin = async () => {
-    try {
-      const response = await signInWithPopup(auth, provider);
+    await getCurrentUser();
 
-      const user = response.user;
-      const name = user.displayName;
-      const email = user.email;
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-      const result = await axios.post(
-        serverUrl + "/api/googlelogin",
-        {
-          name,
-          email,
-        },
-        {
-          withCredentials: true,
-        }
-      );
 
-      console.log(result.data);
-      getCurrentUser();
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const googleLogin = async () => {
+  try {
+    const response = await signInWithPopup(auth, provider);
+
+    const user = response.user;
+    const name = user.displayName;
+    const email = user.email;
+
+    const result = await axios.post(
+      serverUrl + "/api/googlelogin",
+      {
+        name,
+        email,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    console.log(result.data);
+
+    await getCurrentUser();
+
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <div className="min-h-[100vh] w-full bg-gradient-to-l from-[#141414] to-[#0c2025] text-white flex items-center justify-center px-[15px] py-[25px] md:px-[30px] md:py-[40px]">

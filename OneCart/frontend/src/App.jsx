@@ -1,5 +1,10 @@
 import React, { useContext } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 
 import Home from "./pages/Home";
 import Registration from "./pages/Registration";
@@ -24,13 +29,17 @@ import "react-toastify/dist/ReactToastify.css";
 
 import AI from "./component/AI.jsx";
 
-
 function App() {
+  // ================= USER CONTEXT =================
 
-  const { userData } = useContext(userDataContext);
+  const {
+    userData,
+    loading,
+  } = useContext(userDataContext);
+
+  // ================= LOCATION =================
 
   const location = useLocation();
-
 
   // ================= VALID PATHS =================
 
@@ -48,12 +57,10 @@ function App() {
     "/order",
   ];
 
-
   // ================= PRODUCT DETAIL =================
 
   const isProductDetailPage =
     location.pathname.startsWith("/productdetail/");
-
 
   // ================= NOT FOUND =================
 
@@ -61,17 +68,37 @@ function App() {
     !validPaths.includes(location.pathname) &&
     !isProductDetailPage;
 
+  // ======================================================
+  // AUTHENTICATION CHECK
+  // ======================================================
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] flex items-center justify-center">
+        <div className="text-center">
+
+          <div className="w-[45px] h-[45px] border-[4px] border-[#ffffff30] border-t-[#9de7f2] rounded-full animate-spin mx-auto"></div>
+
+          <p className="text-white text-[14px] mt-[15px]">
+            Loading...
+          </p>
+
+        </div>
+      </div>
+    );
+  }
 
   return (
-
     <>
-
-      {/* ================= NAVBAR ================= */}
+      {/* ================================================= */}
+      {/* NAVBAR */}
+      {/* ================================================= */}
 
       {userData && !isNotFoundPage && <Nav />}
 
-
-      {/* ================= TOAST ================= */}
+      {/* ================================================= */}
+      {/* TOAST */}
+      {/* ================================================= */}
 
       <ToastContainer
         position="top-right"
@@ -84,327 +111,276 @@ function App() {
         theme="dark"
       />
 
-
-      {/* ================= ROUTES ================= */}
+      {/* ================================================= */}
+      {/* ROUTES */}
+      {/* ================================================= */}
 
       <Routes>
 
-
-        {/* ================= LOGIN ================= */}
+        {/* ================================================= */}
+        {/* LOGIN */}
+        {/* ================================================= */}
 
         <Route
           path="/login"
           element={
-
             userData ? (
-
               <Navigate
                 to={location.state?.from || "/"}
+                replace
               />
-
             ) : (
-
               <Login />
-
             )
-
           }
         />
 
-
-        {/* ================= SIGNUP ================= */}
+        {/* ================================================= */}
+        {/* SIGNUP */}
+        {/* ================================================= */}
 
         <Route
           path="/signup"
           element={
-
             userData ? (
-
               <Navigate
                 to={location.state?.from || "/"}
+                replace
               />
-
             ) : (
-
               <Registration />
-
             )
-
           }
         />
 
-
-        {/* ================= HOME ================= */}
+        {/* ================================================= */}
+        {/* HOME */}
+        {/* ================================================= */}
 
         <Route
           path="/"
           element={
-
             userData ? (
-
               <Home />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= ABOUT ================= */}
+        {/* ================================================= */}
+        {/* ABOUT */}
+        {/* ================================================= */}
 
         <Route
           path="/about"
           element={
-
             userData ? (
-
               <About />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= COLLECTIONS ================= */}
+        {/* ================================================= */}
+        {/* COLLECTIONS */}
+        {/* ================================================= */}
 
         <Route
           path="/collections"
           element={
-
             userData ? (
-
               <Collections />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= PRODUCT ================= */}
+        {/* ================================================= */}
+        {/* PRODUCT */}
+        {/* ================================================= */}
 
         <Route
           path="/product"
           element={
-
             userData ? (
-
               <Product />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= CONTACT ================= */}
+        {/* ================================================= */}
+        {/* CONTACT */}
+        {/* ================================================= */}
 
         <Route
           path="/contact"
           element={
-
             userData ? (
-
               <Contact />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= PRODUCT DETAIL ================= */}
+        {/* ================================================= */}
+        {/* PRODUCT DETAIL */}
+        {/* ================================================= */}
 
         <Route
           path="/productdetail/:productId"
           element={
-
             userData ? (
-
               <ProductDetail />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= CART ================= */}
+        {/* ================================================= */}
+        {/* CART */}
+        {/* ================================================= */}
 
         <Route
           path="/cart"
           element={
-
             userData ? (
-
               <Cart />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= WISHLIST ================= */}
+        {/* ================================================= */}
+        {/* WISHLIST */}
+        {/* ================================================= */}
 
         <Route
           path="/wishlist"
           element={
-
             userData ? (
-
               <Wishlist />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= PLACE ORDER ================= */}
+        {/* ================================================= */}
+        {/* PLACE ORDER */}
+        {/* ================================================= */}
 
         <Route
           path="/placeorder"
           element={
-
             userData ? (
-
               <PlaceOrder />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= ORDERS ================= */}
+        {/* ================================================= */}
+        {/* ORDERS */}
+        {/* ================================================= */}
 
         <Route
           path="/order"
           element={
-
             userData ? (
-
               <Order />
-
             ) : (
-
               <Navigate
                 to="/login"
                 state={{
-                  from: location.pathname
+                  from: location.pathname,
                 }}
+                replace
               />
-
             )
-
           }
         />
 
-
-        {/* ================= NOT FOUND ================= */}
+        {/* ================================================= */}
+        {/* NOT FOUND */}
+        {/* ================================================= */}
 
         <Route
           path="*"
           element={<NotFound />}
         />
 
-
       </Routes>
 
-
-      {/* ================= AI ASSISTANT ================= */}
+      {/* ================================================= */}
+      {/* AI ASSISTANT */}
+      {/* ================================================= */}
 
       <AI />
-
-
     </>
-
   );
-
 }
-
 
 export default App;
