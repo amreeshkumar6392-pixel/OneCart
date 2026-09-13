@@ -43,7 +43,6 @@ function Nav() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Mobile search open/close
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
 
@@ -109,7 +108,7 @@ function Nav() {
   return (
     <>
       {/* ================================================= */}
-      {/* DESKTOP NAVBAR */}
+      {/* PREMIUM DESKTOP NAVBAR */}
       {/* ================================================= */}
 
       <div
@@ -120,195 +119,327 @@ function Nav() {
           top-0
           left-0
           w-full
-          h-[70px]
-          bg-[#0b1518]
+          h-[72px]
+          px-[4%]
+          z-[9999]
           items-center
           justify-between
-          px-[5%]
-          z-[9999]
-          shadow-lg
+          bg-[#081316]/95
+          backdrop-blur-xl
+          border-b
+          border-white/[0.08]
+          shadow-[0_8px_30px_rgba(0,0,0,0.25)]
         "
       >
 
+        {/* ========================= */}
         {/* LOGO */}
+        {/* ========================= */}
+
         <div
-          className="cursor-pointer"
           onClick={() => navigate("/")}
+          className="
+            w-[120px]
+            flex
+            items-center
+            cursor-pointer
+          "
         >
-         <img
-  src={logo}
-  alt="OneCart"
-  className="w-[90px] h-auto object-contain"
- />
+          <img
+            src={logo}
+            alt="OneCart"
+            className="
+              w-[80px]
+              h-auto
+              object-contain
+            "
+          />
         </div>
 
 
-        {/* DESKTOP MENU */}
+        {/* ========================= */}
+        {/* DESKTOP NAV LINKS */}
+        {/* ========================= */}
+
         <div
           className="
             flex
             items-center
-            gap-[35px]
-            text-white
-            text-[16px]
+            gap-[8px]
+            bg-white/[0.03]
+            border
+            border-white/[0.06]
+            rounded-full
+            px-[7px]
+            py-[6px]
           "
         >
 
-          <p
-            className="cursor-pointer hover:text-[#bff1f9]"
+          {/* HOME */}
+
+          <button
             onClick={() => navigate("/")}
+            className="
+              px-[20px]
+              py-[9px]
+              rounded-full
+              text-[14px]
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
             Home
-          </p>
+          </button>
 
-          <p
-            className="cursor-pointer hover:text-[#bff1f9]"
+
+          {/* COLLECTIONS */}
+
+          <button
             onClick={() => navigate("/collections")}
+            className="
+              px-[20px]
+              py-[9px]
+              rounded-full
+              text-[14px]
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
             Collections
-          </p>
+          </button>
 
-          <p
-            className="cursor-pointer hover:text-[#bff1f9]"
+
+          {/* ABOUT */}
+
+          <button
             onClick={() => navigate("/about")}
+            className="
+              px-[20px]
+              py-[9px]
+              rounded-full
+              text-[14px]
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
             About
-          </p>
+          </button>
 
-          <p
-            className="cursor-pointer hover:text-[#bff1f9]"
+
+          {/* CONTACT */}
+
+          <button
             onClick={() => navigate("/contact")}
+            className="
+              px-[20px]
+              py-[9px]
+              rounded-full
+              text-[14px]
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
             Contact
-          </p>
+          </button>
 
         </div>
 
 
-        {/* DESKTOP RIGHT SIDE */}
+        {/* ========================= */}
+        {/* RIGHT SIDE */}
+        {/* ========================= */}
+
         <div
           className="
+            w-[200px]
             flex
             items-center
-            gap-[20px]
-            text-white
+            justify-end
+            gap-[6px]
           "
         >
 
+          {/* ========================= */}
           {/* SEARCH */}
-      {/* DESKTOP SEARCH */}
-<div className="relative">
+          {/* ========================= */}
 
-  <button
-    onClick={() => {
-      setShowSearch((prev) => !prev);
-      setShowProfile(false);
-    }}
-    className="
-      w-[40px]
-      h-[40px]
-      flex
-      items-center
-      justify-center
-      text-white
-    "
-  >
-    {showSearch ? (
-      <IoClose
-        className="w-[27px] h-[27px]"
-      />
-    ) : (
-      <IoSearchOutline
-        className="w-[25px] h-[25px]"
-      />
-    )}
-  </button>
-
-  {/* DESKTOP SEARCH BAR */}
-  {showSearch && (
-    <div
-      className="
-        absolute
-        right-0
-        top-[50px]
-        w-[300px]
-        h-[50px]
-        bg-[#111c1f]
-        border
-        border-white/10
-        rounded-[10px]
-        flex
-        items-center
-        px-[12px]
-        shadow-xl
-      "
-    >
-
-      <IoSearchOutline
-        className="
-          w-[21px]
-          h-[21px]
-          text-[#bff1f9]
-          flex-shrink-0
-        "
-      />
-
-      <input
-        type="text"
-        autoFocus
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => {
-          const value = e.target.value;
-
-          setSearch(value);
-
-          if (value.trim()) {
-            navigate("/collections");
-          }
-        }}
-        className="
-          w-full
-          h-full
-          bg-transparent
-          outline-none
-          px-[10px]
-          text-white
-          text-[14px]
-          placeholder:text-gray-500
-        "
-      />
-
-      {search && (
-        <button
-          onClick={() => {
-            setSearch("");
-          }}
-          className="text-gray-400"
-        >
-          <IoClose
-            className="w-[20px] h-[20px]"
-          />
-        </button>
-      )}
-
-    </div>
-  )}
-
-</div>
-
-
-          {/* PROFILE */}
           <div className="relative">
 
             <button
-              onClick={() =>
-                setShowProfile((prev) => !prev)
-              }
+              onClick={() => {
+                setShowSearch((prev) => !prev);
+                setShowProfile(false);
+              }}
+              className="
+                w-[42px]
+                h-[42px]
+                rounded-full
+                flex
+                items-center
+                justify-center
+                text-gray-300
+                hover:text-white
+                hover:bg-white/[0.08]
+                transition-all
+                duration-300
+                cursor-pointer
+              "
             >
+
+              {showSearch ? (
+                <IoClose
+                  className="
+                    w-[22px]
+                    h-[22px]
+                  "
+                />
+              ) : (
+                <IoSearchOutline
+                  className="
+                    w-[22px]
+                    h-[22px]
+                  "
+                />
+              )}
+
+            </button>
+
+
+            {/* SEARCH BOX */}
+
+            {showSearch && (
+              <div
+                className="
+                  absolute
+                  right-0
+                  top-[55px]
+                  w-[320px]
+                  h-[52px]
+                  bg-[#101d20]
+                  border
+                  border-white/[0.10]
+                  rounded-[12px]
+                  flex
+                  items-center
+                  px-[14px]
+                  shadow-[0_15px_40px_rgba(0,0,0,0.45)]
+                  backdrop-blur-xl
+                "
+              >
+
+                <IoSearchOutline
+                  className="
+                    w-[20px]
+                    h-[20px]
+                    text-[#9de7f2]
+                    flex-shrink-0
+                  "
+                />
+
+
+                <input
+                  type="text"
+                  autoFocus
+                  placeholder="Search products..."
+                  value={search}
+                  onChange={(e) => {
+
+                    const value = e.target.value;
+
+                    setSearch(value);
+
+                    if (value.trim()) {
+                      navigate("/collections");
+                    }
+
+                  }}
+                  className="
+                    w-full
+                    h-full
+                    bg-transparent
+                    outline-none
+                    px-[10px]
+                    text-white
+                    text-[14px]
+                    placeholder:text-gray-500
+                  "
+                />
+
+
+                {search && (
+                  <button
+                    onClick={() => setSearch("")}
+                    className="
+                      text-gray-500
+                      hover:text-white
+                      transition-all
+                    "
+                  >
+                    <IoClose
+                      className="
+                        w-[19px]
+                        h-[19px]
+                      "
+                    />
+                  </button>
+                )}
+
+              </div>
+            )}
+
+          </div>
+
+
+          {/* ========================= */}
+          {/* PROFILE */}
+          {/* ========================= */}
+
+          <div className="relative">
+
+            <button
+              onClick={() => {
+                setShowProfile((prev) => !prev);
+                setShowSearch(false);
+              }}
+              className="
+                w-[42px]
+                h-[42px]
+                rounded-full
+                flex
+                items-center
+                justify-center
+                text-gray-300
+                hover:text-white
+                hover:bg-white/[0.08]
+                transition-all
+                duration-300
+                cursor-pointer
+              "
+            >
+
               <IoPersonOutline
-                className="w-[24px] h-[24px]"
+                className="
+                  w-[21px]
+                  h-[21px]
+                "
               />
+
             </button>
 
 
@@ -317,26 +448,34 @@ function Nav() {
                 className="
                   absolute
                   right-0
-                  top-[45px]
-                  w-[180px]
-                  bg-[#111c1f]
+                  top-[55px]
+                  w-[190px]
+                  bg-[#101d20]
                   border
-                  border-white/10
-                  rounded-[8px]
+                  border-white/[0.10]
+                  rounded-[12px]
                   overflow-hidden
-                  shadow-xl
+                  shadow-[0_15px_40px_rgba(0,0,0,0.45)]
+                  backdrop-blur-xl
+                  py-[6px]
                 "
               >
 
                 <button
-                  onClick={() => navigate("/profile")}
+                  onClick={() => {
+                    navigate("/profile");
+                    setShowProfile(false);
+                  }}
                   className="
                     w-full
                     text-left
-                    px-[15px]
+                    px-[17px]
                     py-[12px]
-                    text-white
-                    hover:bg-white/10
+                    text-gray-300
+                    text-[14px]
+                    hover:text-white
+                    hover:bg-white/[0.07]
+                    transition-all
                   "
                 >
                   Profile
@@ -344,31 +483,44 @@ function Nav() {
 
 
                 <button
-                  onClick={() => navigate("/orders")}
+                  onClick={() => {
+                    navigate("/orders");
+                    setShowProfile(false);
+                  }}
                   className="
                     w-full
                     text-left
-                    px-[15px]
+                    px-[17px]
                     py-[12px]
-                    text-white
-                    hover:bg-white/10
+                    text-gray-300
+                    text-[14px]
+                    hover:text-white
+                    hover:bg-white/[0.07]
+                    transition-all
                   "
                 >
                   Orders
                 </button>
 
 
+                <div className="h-[1px] bg-white/[0.07] my-[5px]"></div>
+
+
                 <button
-                  onClick={() =>
-                    setShowLogoutConfirm(true)
-                  }
+                  onClick={() => {
+                    setShowLogoutConfirm(true);
+                    setShowProfile(false);
+                  }}
                   className="
                     w-full
                     text-left
-                    px-[15px]
+                    px-[17px]
                     py-[12px]
                     text-red-400
-                    hover:bg-white/10
+                    text-[14px]
+                    hover:text-red-300
+                    hover:bg-red-500/[0.07]
+                    transition-all
                   "
                 >
                   Logout
@@ -380,41 +532,88 @@ function Nav() {
           </div>
 
 
+          {/* ========================= */}
           {/* WISHLIST */}
+          {/* ========================= */}
+
           <button
             onClick={() => navigate("/wishlist")}
+            className="
+              w-[42px]
+              h-[42px]
+              rounded-full
+              flex
+              items-center
+              justify-center
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
+
             <FaHeart
-              className="w-[22px] h-[22px]"
+              className="
+                w-[18px]
+                h-[18px]
+              "
             />
+
           </button>
 
 
+          {/* ========================= */}
           {/* CART */}
+          {/* ========================= */}
+
           <button
             onClick={() => navigate("/cart")}
-            className="relative"
+            className="
+              relative
+              w-[42px]
+              h-[42px]
+              rounded-full
+              flex
+              items-center
+              justify-center
+              text-gray-300
+              hover:text-white
+              hover:bg-white/[0.08]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
           >
 
             <FiShoppingBag
-              className="w-[25px] h-[25px]"
+              className="
+                w-[21px]
+                h-[21px]
+              "
             />
+
 
             {cartCount > 0 && (
               <span
                 className="
                   absolute
-                  -top-[8px]
-                  -right-[8px]
-                  w-[18px]
-                  h-[18px]
+                  top-[1px]
+                  right-[0px]
+                  min-w-[17px]
+                  h-[17px]
+                  px-[4px]
                   rounded-full
-                  bg-red-500
-                  text-white
-                  text-[10px]
+                  bg-[#9de7f2]
+                  text-[#07191e]
+                  text-[9px]
+                  font-bold
                   flex
                   items-center
                   justify-center
+                  border
+                  border-[#081316]
                 "
               >
                 {cartCount}
@@ -422,8 +621,6 @@ function Nav() {
             )}
 
           </button>
-
-          {/* DESKTOP LOGOUT ICON REMOVED */}
 
         </div>
 
@@ -453,6 +650,7 @@ function Nav() {
       >
 
         {/* HAMBURGER */}
+
         <button
           onClick={() => {
             setShowMobileMenu((prev) => !prev);
@@ -482,6 +680,7 @@ function Nav() {
 
 
         {/* ONECART */}
+
         <div
           onClick={() => navigate("/")}
           className="
@@ -507,6 +706,7 @@ function Nav() {
 
 
         {/* RIGHT SIDE */}
+
         <div
           className="
             flex
@@ -516,6 +716,7 @@ function Nav() {
         >
 
           {/* MOBILE SEARCH */}
+
           <button
             onClick={() => {
               setShowMobileSearch((prev) => !prev);
@@ -545,6 +746,7 @@ function Nav() {
 
 
           {/* MOBILE LOGOUT */}
+
           <button
             onClick={() => {
               setShowLogoutConfirm(true);
@@ -609,7 +811,6 @@ function Nav() {
             "
           >
 
-            {/* SEARCH ICON */}
             <IoSearchOutline
               className="
                 w-[21px]
@@ -620,7 +821,6 @@ function Nav() {
             />
 
 
-            {/* SEARCH INPUT */}
             <input
               type="text"
               autoFocus
@@ -640,7 +840,6 @@ function Nav() {
             />
 
 
-            {/* CLEAR SEARCH */}
             {search && (
               <button
                 onClick={clearMobileSearch}
@@ -696,6 +895,7 @@ function Nav() {
           >
 
             {/* HOME */}
+
             <button
               onClick={() => {
                 navigate("/");
@@ -726,6 +926,7 @@ function Nav() {
 
 
             {/* COLLECTIONS */}
+
             <button
               onClick={() => {
                 navigate("/collections");
@@ -756,6 +957,7 @@ function Nav() {
 
 
             {/* PROFILE */}
+
             <button
               onClick={() => {
                 navigate("/profile");
@@ -786,6 +988,7 @@ function Nav() {
 
 
             {/* WISHLIST */}
+
             <button
               onClick={() => {
                 navigate("/wishlist");
@@ -816,6 +1019,7 @@ function Nav() {
 
 
             {/* CART */}
+
             <button
               onClick={() => {
                 navigate("/cart");
@@ -867,6 +1071,7 @@ function Nav() {
 
 
             {/* CONTACT */}
+
             <button
               onClick={() => {
                 navigate("/contact");
@@ -962,6 +1167,7 @@ function Nav() {
             >
 
               {/* CANCEL */}
+
               <button
                 onClick={() =>
                   setShowLogoutConfirm(false)
@@ -982,6 +1188,7 @@ function Nav() {
 
 
               {/* LOGOUT */}
+
               <button
                 onClick={handleLogOut}
                 disabled={isLoggingOut}
@@ -1034,6 +1241,7 @@ function Nav() {
       >
 
         {/* HOME */}
+
         <button
           onClick={() => navigate("/")}
           className="
@@ -1061,6 +1269,7 @@ function Nav() {
 
 
         {/* COLLECTION */}
+
         <button
           onClick={() => navigate("/collections")}
           className="
@@ -1088,6 +1297,7 @@ function Nav() {
 
 
         {/* CART */}
+
         <button
           onClick={() => navigate("/cart")}
           className="
@@ -1137,6 +1347,7 @@ function Nav() {
 
 
         {/* WISHLIST */}
+
         <button
           onClick={() => navigate("/wishlist")}
           className="
@@ -1164,6 +1375,7 @@ function Nav() {
 
 
         {/* PROFILE */}
+
         <button
           onClick={() => navigate("/profile")}
           className="
