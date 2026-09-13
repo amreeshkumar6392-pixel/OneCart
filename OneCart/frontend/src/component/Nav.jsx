@@ -503,7 +503,7 @@ function Nav() {
 
                 <button
                   onClick={() => {
-                    navigate("/profile");
+                    navigate("/");
                     setShowProfile(false);
                   }}
                   className="
@@ -525,7 +525,7 @@ function Nav() {
 
                 <button
                   onClick={() => {
-                    navigate("/orders");
+                    navigate("/order");
                     setShowProfile(false);
                   }}
                   className="
