@@ -48,12 +48,21 @@ function Login() {
 
 const googleLogin = async () => {
   try {
+    // Open Google login popup
     const response = await signInWithPopup(auth, provider);
 
     const user = response.user;
+
     const name = user.displayName;
     const email = user.email;
 
+    console.log("Google User:", {
+      name,
+      email,
+    });
+
+
+    // Send Google user to your backend
     const result = await axios.post(
       serverUrl + "/api/googlelogin",
       {
@@ -65,13 +74,24 @@ const googleLogin = async () => {
       }
     );
 
-    console.log(result.data);
+    console.log("Google Login Backend Response:", result.data);
 
+
+    // Get logged-in user from your backend
     await getCurrentUser();
 
+
+    // Go to home page
     navigate("/");
+
   } catch (error) {
-    console.log(error);
+
+    console.log(
+      "Google Login Error:",
+      error.code || "",
+      error.response?.data || error.message
+    );
+
   }
 };
 
