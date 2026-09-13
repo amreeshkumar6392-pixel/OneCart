@@ -1049,7 +1049,7 @@ function Nav() {
 
             <button
               onClick={() => {
-                navigate("/profile");
+                navigate("/");
                 setShowMobileMenu(false);
               }}
               className="
@@ -1435,38 +1435,66 @@ function Nav() {
         </button>
 
 
-        {/* WISHLIST */}
+     {/* WISHLIST */}
 
-        <button
-          onClick={() => navigate("/wishlist")}
-          className="
-            text-white
-            flex
-            items-center
-            justify-center
-            flex-col
-            gap-[2px]
-          "
-        >
+<button
+  onClick={() => navigate("/wishlist")}
+  className="
+    text-white
+    flex
+    items-center
+    justify-center
+    flex-col
+    gap-[2px]
+    relative
+  "
+>
 
-          <FaHeart
-            className="
-              w-[23px]
-              h-[23px]
-            "
-          />
+  <div className="relative">
 
-          <span>
-            Wishlist
-          </span>
+    <FaHeart
+      className="
+        w-[23px]
+        h-[23px]
+      "
+    />
 
-        </button>
+    {/* WISHLIST COUNT */}
+    {wishlist.length > 0 && (
+      <span
+        className="
+          absolute
+          -top-[8px]
+          -right-[10px]
+          bg-[#ff3f6c]
+          text-white
+          text-[10px]
+          font-semibold
+          w-[18px]
+          h-[18px]
+          rounded-full
+          flex
+          items-center
+          justify-center
+        "
+      >
+        {wishlist.length}
+      </span>
+    )}
+
+  </div>
+
+  <span>
+    Wishlist
+  </span>
+
+</button>
 
 
         {/* PROFILE */}
 
         <button
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate("/")}
           className="
             text-white
             flex
