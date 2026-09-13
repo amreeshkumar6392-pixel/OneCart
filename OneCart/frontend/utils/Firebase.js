@@ -1,8 +1,14 @@
-import {getAuth, GoogleAuthProvider} from "firebase/auth"
+import {
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence
+} from "firebase/auth";
+
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey:import.meta.env.VITE_FIREBASE_APIKEY,
+  apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
   authDomain: "loginonecart-8ef12.firebaseapp.com",
   projectId: "loginonecart-8ef12",
   storageBucket: "loginonecart-8ef12.firebasestorage.app",
@@ -12,9 +18,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app)
-const provider = new GoogleAuthProvider()
 
+const auth = getAuth(app);
 
+// Firebase Auth persistence
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Firebase persistence enabled");
+  })
+  .catch((error) => {
+    console.log(
+      "Firebase persistence error:",
+      error
+    );
+  });
 
-export {auth,provider}
+const provider = new GoogleAuthProvider();
+
+export { auth, provider };

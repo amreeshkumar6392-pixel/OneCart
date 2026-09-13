@@ -61,9 +61,16 @@ function Login() {
 
   useEffect(() => {
 
+    let isMounted = true;
+
     const handleGoogleRedirect = async () => {
 
       try {
+
+        // Wait for Firebase Auth persistence
+        await new Promise((resolve) =>
+          setTimeout(resolve, 500)
+        );
 
         const response =
           await getRedirectResult(auth);
@@ -71,6 +78,12 @@ function Login() {
 
         // No Google redirect result
         if (!response) {
+          return;
+        }
+
+
+        // Component no longer mounted
+        if (!isMounted) {
           return;
         }
 
@@ -140,6 +153,11 @@ function Login() {
 
 
     handleGoogleRedirect();
+
+
+    return () => {
+      isMounted = false;
+    };
 
   }, [serverUrl]);
 
