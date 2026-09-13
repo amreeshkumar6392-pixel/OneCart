@@ -30,7 +30,7 @@ import axios from "axios";
 
 import {
   signInWithRedirect,
-  getRedirectResult,
+
 } from "firebase/auth";
 
 import {
@@ -61,137 +61,6 @@ function Login() {
   // HANDLE GOOGLE REDIRECT RESULT
   // =====================================================
 
-  useEffect(() => {
-
-    let isMounted = true;
-
-    const handleGoogleRedirect = async () => {
-
-      try {
-
-        // Wait until Firebase persistence
-        // is completely ready
-        await authReady;
-
-
-        console.log(
-          "Checking Google redirect result..."
-        );
-
-
-        const response =
-          await getRedirectResult(auth);
-
-
-        // No Google redirect result
-        if (!response) {
-          return;
-        }
-
-
-        // Component no longer mounted
-        if (!isMounted) {
-          return;
-        }
-
-
-        const user = response.user;
-
-        const name = user.displayName;
-        const email = user.email;
-
-
-        console.log(
-          "Google User:",
-          {
-            name,
-            email,
-          }
-        );
-
-
-        // =================================================
-        // SEND GOOGLE USER TO BACKEND
-        // =================================================
-
-        const result = await axios.post(
-
-          serverUrl + "/api/googlelogin",
-
-          {
-            name,
-            email,
-          },
-
-          {
-            withCredentials: true,
-          }
-
-        );
-
-
-        console.log(
-          "Google Login Backend Response:",
-          result.data
-        );
-
-
-        // =================================================
-        // GET CURRENT USER
-        // =================================================
-
-        const currentUser =
-          await getCurrentUser();
-
-
-        if (!currentUser) {
-
-          console.log(
-            "Google login succeeded, but current user could not be loaded."
-          );
-
-          return;
-
-        }
-
-
-        // =================================================
-        // GO TO HOME
-        // =================================================
-
-        navigate("/", {
-          replace: true,
-        });
-
-
-      } catch (error) {
-
-        console.log(
-          "Google Redirect Login Error:",
-          error.code || "",
-          error.response?.data ||
-            error.message
-        );
-
-      }
-
-    };
-
-
-    handleGoogleRedirect();
-
-
-    return () => {
-
-      isMounted = false;
-
-    };
-
-  }, [
-    serverUrl,
-    getCurrentUser,
-    navigate,
-  ]);
 
 
   // =====================================================
@@ -273,36 +142,106 @@ function Login() {
 
   const googleLogin = async () => {
 
-    try {
+  try {
 
-      // IMPORTANT:
-      // Wait until Firebase persistence
-      // has been configured before redirecting
-      await authReady;
+    // Wait for Firebase persistence
+    await authReady;
 
+    console.log("Starting Google Login...");
+
+
+    // =================================================
+    // GOOGLE POPUP LOGIN
+    // =================================================
+
+    const response = await signInWithPopup(
+      auth,
+      provider
+    );
+
+
+    // =================================================
+    // GET FIREBASE USER
+    // =================================================
+
+    const user = response.user;
+
+    const name = user.displayName;
+    const email = user.email;
+
+
+    console.log("Google User:", {
+      name,
+      email,
+    });
+
+
+    // =================================================
+    // SEND USER TO ONECART BACKEND
+    // =================================================
+
+    const result = await axios.post(
+
+      serverUrl + "/api/googlelogin",
+
+      {
+        name,
+        email,
+      },
+
+      {
+        withCredentials: true,
+      }
+
+    );
+
+
+    console.log(
+      "Google Login Backend Response:",
+      result.data
+    );
+
+
+    // =================================================
+    // GET CURRENT USER
+    // =================================================
+
+    const currentUser =
+      await getCurrentUser();
+
+
+    if (!currentUser) {
 
       console.log(
-        "Starting Google Login..."
+        "Google login succeeded, but current user could not be loaded."
       );
 
-
-      await signInWithRedirect(
-        auth,
-        provider
-      );
-
-
-    } catch (error) {
-
-      console.log(
-        "Google Login Error:",
-        error.code || "",
-        error.message
-      );
+      return;
 
     }
 
-  };
+
+    // =================================================
+    // GO TO HOME
+    // =================================================
+
+    navigate("/", {
+      replace: true,
+    });
+
+
+  } catch (error) {
+
+    console.log(
+      "Google Login Error:",
+      error.code || "",
+      error.response?.data ||
+        error.message
+    );
+
+  }
+
+};
 
 
   // =====================================================
