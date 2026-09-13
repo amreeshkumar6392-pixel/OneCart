@@ -26,7 +26,7 @@ function Home() {
 
 
   return (
-<div className="overflow-x-hidden relative md:top-[70px]">
+<div className="overflow-x-hidden relative pt-[65px] md:top-[70px]">
     <div className="w-[100vw] lg:h-[100vh] md:h-[50vh] sm:h-[30vh] bg-gradient-to-l from-[#141414] to-[#0c2025]">
     <Background heroCount={heroCount}/>
     <Hero 

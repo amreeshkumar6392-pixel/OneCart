@@ -174,7 +174,7 @@ function Collections() {
 
   return (
 
-<div className='w-full min-h-screen bg-gradient-to-br from-[#081719] via-[#0c2025] to-[#141414] flex flex-col md:flex-row pt-[20px] md:pt-[72px] pb-[100px] overflow-x-hidden'>
+<div className='w-full min-h-screen bg-gradient-to-br from-[#081719] via-[#0c2025] to-[#141414] flex flex-col md:flex-row pt-[85px] md:pt-[72px] pb-[100px] overflow-x-hidden'>
 
 
       {/* ================= FILTER SIDEBAR ================= */}
