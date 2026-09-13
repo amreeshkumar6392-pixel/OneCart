@@ -28,6 +28,7 @@ function Nav() {
 
   const { userData, setUserData } = useContext(userDataContext);
   const { serverUrl } = useContext(authDataContext);
+
   const {
     cartCount,
     search,
@@ -134,11 +135,11 @@ function Nav() {
           className="cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img
-            src={logo}
-            alt="OneCart"
-            className="w-[120px]"
-          />
+         <img
+  src={logo}
+  alt="OneCart"
+  className="w-[90px] h-auto object-contain"
+ />
         </div>
 
 
@@ -195,16 +196,106 @@ function Nav() {
         >
 
           {/* SEARCH */}
-          <button
-            onClick={() => {
-              setShowSearch(true);
-              navigate("/collections");
-            }}
-          >
-            <IoSearchOutline
-              className="w-[25px] h-[25px]"
-            />
-          </button>
+      {/* DESKTOP SEARCH */}
+<div className="relative">
+
+  <button
+    onClick={() => {
+      setShowSearch((prev) => !prev);
+      setShowProfile(false);
+    }}
+    className="
+      w-[40px]
+      h-[40px]
+      flex
+      items-center
+      justify-center
+      text-white
+    "
+  >
+    {showSearch ? (
+      <IoClose
+        className="w-[27px] h-[27px]"
+      />
+    ) : (
+      <IoSearchOutline
+        className="w-[25px] h-[25px]"
+      />
+    )}
+  </button>
+
+  {/* DESKTOP SEARCH BAR */}
+  {showSearch && (
+    <div
+      className="
+        absolute
+        right-0
+        top-[50px]
+        w-[300px]
+        h-[50px]
+        bg-[#111c1f]
+        border
+        border-white/10
+        rounded-[10px]
+        flex
+        items-center
+        px-[12px]
+        shadow-xl
+      "
+    >
+
+      <IoSearchOutline
+        className="
+          w-[21px]
+          h-[21px]
+          text-[#bff1f9]
+          flex-shrink-0
+        "
+      />
+
+      <input
+        type="text"
+        autoFocus
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setSearch(value);
+
+          if (value.trim()) {
+            navigate("/collections");
+          }
+        }}
+        className="
+          w-full
+          h-full
+          bg-transparent
+          outline-none
+          px-[10px]
+          text-white
+          text-[14px]
+          placeholder:text-gray-500
+        "
+      />
+
+      {search && (
+        <button
+          onClick={() => {
+            setSearch("");
+          }}
+          className="text-gray-400"
+        >
+          <IoClose
+            className="w-[20px] h-[20px]"
+          />
+        </button>
+      )}
+
+    </div>
+  )}
+
+</div>
 
 
           {/* PROFILE */}
@@ -332,17 +423,7 @@ function Nav() {
 
           </button>
 
-
-          {/* LOGOUT */}
-          <button
-            onClick={() =>
-              setShowLogoutConfirm(true)
-            }
-          >
-            <MdLogout
-              className="w-[25px] h-[25px]"
-            />
-          </button>
+          {/* DESKTOP LOGOUT ICON REMOVED */}
 
         </div>
 

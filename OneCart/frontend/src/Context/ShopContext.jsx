@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useMemo,
 } from "react";
 
 import { authDataContext } from "./AuthContext";
@@ -144,7 +145,7 @@ function ShopContext({ children }) {
 
       console.log(response.data);
 
-      setCartItem(response.data.cartData);
+      setCartItem(response.data.cartData || {});
 
     } catch (error) {
 
@@ -231,7 +232,7 @@ function ShopContext({ children }) {
   // GET CART COUNT
   // =========================
 
-  const getCartCount = () => {
+  const cartCount = useMemo(() => {
 
     let totalCount = 0;
 
@@ -248,6 +249,12 @@ function ShopContext({ children }) {
     }
 
     return totalCount;
+
+  }, [cartItem]);
+
+
+  const getCartCount = () => {
+    return cartCount;
   };
 
 
@@ -363,6 +370,7 @@ function ShopContext({ children }) {
     setCartItem,
     addToCart,
     getCartCount,
+    cartCount,
     UpdateQuantity,
     getCartAmount,
 
