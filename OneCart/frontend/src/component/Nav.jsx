@@ -1,13 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import logo from "../assets/logo.png";
-
-import { IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline, IoClose } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
-
 import {
   MdHome,
   MdPermContactCalendar,
@@ -15,8 +12,9 @@ import {
   MdClose,
   MdLogout,
 } from "react-icons/md";
-
 import { HiOutlineCollection } from "react-icons/hi";
+
+import logo from "../assets/logo.png";
 
 import { userDataContext } from "../Context/UserContext";
 import { authDataContext } from "../Context/AuthContext";
@@ -24,95 +22,38 @@ import { shopDataContext } from "../Context/ShopContext";
 
 import axios from "axios";
 
+
 function Nav() {
+  const navigate = useNavigate();
 
-  // ======================================================
-  // USER CONTEXT
-  // ======================================================
-
-  const {
-    userData,
-    setUserData,
-  } = useContext(userDataContext);
-
-
-  // ======================================================
-  // AUTH CONTEXT
-  // ======================================================
-
+  const { userData, setUserData } = useContext(userDataContext);
   const { serverUrl } = useContext(authDataContext);
-
-
-  // ======================================================
-  // SHOP CONTEXT
-  // ======================================================
-
   const {
-    showSearch,
-    setShowSearch,
+    cartCount,
     search,
     setSearch,
-    wishlist,
-    getCartCount,
+    showSearch,
+    setShowSearch,
   } = useContext(shopDataContext);
 
 
-  // ======================================================
-  // STATES
-  // ======================================================
-
   const [showProfile, setShowProfile] = useState(false);
-
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-
-  // ======================================================
-  // NAVIGATE
-  // ======================================================
-
-  const navigate = useNavigate();
+  // Mobile search open/close
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
 
-  // ======================================================
-  // SEARCH
-  // ======================================================
-
-  const handleSearch = () => {
-
-    setShowSearch(true);
-
-    navigate("/collections");
-
-  };
-
-
-  // ======================================================
-  // MOBILE MENU NAVIGATION
-  // ======================================================
-
-  const handleMobileNavigation = (path) => {
-
-    navigate(path);
-
-    setShowMobileMenu(false);
-
-  };
-
-
-  // ======================================================
+  // =========================
   // LOGOUT
-  // ======================================================
+  // =========================
 
   const handleLogOut = async () => {
-
     if (isLoggingOut) return;
 
     try {
-
       setIsLoggingOut(true);
 
       const result = await axios.get(
@@ -124,40 +65,48 @@ function Nav() {
 
       console.log(result.data);
 
-      // Clear user immediately
       setUserData(null);
-
-      // Close everything
       setShowProfile(false);
       setShowMobileMenu(false);
       setShowLogoutConfirm(false);
 
-      // Go to login
-      navigate("/login", {
-        replace: true,
-      });
+      navigate("/login", { replace: true });
 
     } catch (error) {
-
       console.log(
         "Logout Error:",
         error.response?.data || error.message
       );
-
     } finally {
-
       setIsLoggingOut(false);
-
     }
+  };
 
+
+  // =========================
+  // MOBILE SEARCH
+  // =========================
+
+  const handleMobileSearch = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+    setShowSearch(true);
+
+    if (value.trim()) {
+      navigate("/collections");
+    }
+  };
+
+
+  const clearMobileSearch = () => {
+    setSearch("");
+    setShowSearch(false);
   };
 
 
   return (
-
-    <div className="w-full">
-
-
+    <>
       {/* ================================================= */}
       {/* DESKTOP NAVBAR */}
       {/* ================================================= */}
@@ -166,523 +115,238 @@ function Nav() {
         className="
           hidden
           md:flex
-          w-full
-          h-[72px]
-          bg-white
           fixed
           top-0
           left-0
-          z-[9998]
-          shadow-[0_2px_10px_rgba(0,0,0,0.08)]
+          w-full
+          h-[70px]
+          bg-[#0b1518]
           items-center
-          px-[4%]
-          gap-[30px]
+          justify-between
+          px-[5%]
+          z-[9999]
+          shadow-lg
         "
       >
 
-
-        {/* ================= LOGO ================= */}
-
+        {/* LOGO */}
         <div
-          className="
-            w-[100px]
-            flex
-            items-center
-            justify-start
-            cursor-pointer
-          "
+          className="cursor-pointer"
           onClick={() => navigate("/")}
         >
-
           <img
             src={logo}
             alt="OneCart"
-            className="w-[55px] h-[55px] object-contain"
+            className="w-[120px]"
           />
-
         </div>
 
 
-        {/* ================= NAVIGATION ================= */}
-
-        <div className="flex items-center gap-[38px]">
-
-
-          {/* HOME */}
-
-          <p
-            onClick={() => navigate("/")}
-            className="
-              text-[16px]
-              font-semibold
-              text-[#282c3f]
-              cursor-pointer
-              hover:text-[#ff3f6c]
-              transition-all
-            "
-          >
-            HOME
-          </p>
-
-
-          {/* COLLECTIONS */}
-
-          <p
-            onClick={() => navigate("/collections")}
-            className="
-              text-[16px]
-              font-semibold
-              text-[#282c3f]
-              cursor-pointer
-              hover:text-[#ff3f6c]
-              transition-all
-            "
-          >
-            COLLECTIONS
-          </p>
-
-
-          {/* ABOUT */}
-
-          <p
-            onClick={() => navigate("/about")}
-            className="
-              text-[16px]
-              font-semibold
-              text-[#282c3f]
-              cursor-pointer
-              hover:text-[#ff3f6c]
-              transition-all
-            "
-          >
-            ABOUT
-          </p>
-
-
-          {/* CONTACT */}
-
-          <p
-            onClick={() => navigate("/contact")}
-            className="
-              text-[16px]
-              font-semibold
-              text-[#282c3f]
-              cursor-pointer
-              hover:text-[#ff3f6c]
-              transition-all
-            "
-          >
-            CONTACT
-          </p>
-
-        </div>
-
-
-        {/* ================================================= */}
-        {/* DESKTOP SEARCH */}
-        {/* ================================================= */}
-
-        <div className="flex-1 max-w-[500px] ml-[10px]">
-
-          <div
-            className="
-              w-full
-              h-[48px]
-              bg-[#f5f5f6]
-              flex
-              items-center
-              px-[15px]
-              rounded-[4px]
-            "
-          >
-
-            <IoSearchOutline
-              className="
-                w-[22px]
-                h-[22px]
-                text-[#696e79]
-                cursor-pointer
-              "
-              onClick={handleSearch}
-            />
-
-
-            <input
-              type="text"
-              placeholder="Search for products, brands and more"
-              className="
-                w-full
-                h-full
-                bg-transparent
-                outline-none
-                px-[12px]
-                text-[15px]
-                text-[#282c3f]
-                placeholder:text-[#696e79]
-              "
-              onFocus={() => {
-                setShowSearch(true);
-              }}
-              onChange={(e) => {
-
-                setSearch(e.target.value);
-
-                setShowSearch(true);
-
-                navigate("/collections");
-
-              }}
-              value={search}
-            />
-
-          </div>
-
-        </div>
-
-
-        {/* ================================================= */}
-        {/* DESKTOP RIGHT SIDE */}
-        {/* ================================================= */}
-
+        {/* DESKTOP MENU */}
         <div
           className="
             flex
             items-center
-            justify-end
-            gap-[28px]
-            ml-auto
+            gap-[35px]
+            text-white
+            text-[16px]
           "
         >
 
-
-          {/* ================= PROFILE ================= */}
-
-          <div
-            className="
-              relative
-              flex
-              flex-col
-              items-center
-              justify-center
-              cursor-pointer
-              min-w-[45px]
-            "
-            onClick={() =>
-              setShowProfile((prev) => !prev)
-            }
+          <p
+            className="cursor-pointer hover:text-[#bff1f9]"
+            onClick={() => navigate("/")}
           >
+            Home
+          </p>
 
-            {!userData ? (
+          <p
+            className="cursor-pointer hover:text-[#bff1f9]"
+            onClick={() => navigate("/collections")}
+          >
+            Collections
+          </p>
 
+          <p
+            className="cursor-pointer hover:text-[#bff1f9]"
+            onClick={() => navigate("/about")}
+          >
+            About
+          </p>
+
+          <p
+            className="cursor-pointer hover:text-[#bff1f9]"
+            onClick={() => navigate("/contact")}
+          >
+            Contact
+          </p>
+
+        </div>
+
+
+        {/* DESKTOP RIGHT SIDE */}
+        <div
+          className="
+            flex
+            items-center
+            gap-[20px]
+            text-white
+          "
+        >
+
+          {/* SEARCH */}
+          <button
+            onClick={() => {
+              setShowSearch(true);
+              navigate("/collections");
+            }}
+          >
+            <IoSearchOutline
+              className="w-[25px] h-[25px]"
+            />
+          </button>
+
+
+          {/* PROFILE */}
+          <div className="relative">
+
+            <button
+              onClick={() =>
+                setShowProfile((prev) => !prev)
+              }
+            >
               <IoPersonOutline
-                className="
-                  w-[23px]
-                  h-[23px]
-                  text-[#282c3f]
-                "
+                className="w-[24px] h-[24px]"
               />
+            </button>
 
-            ) : (
 
+            {showProfile && (
               <div
                 className="
-                  w-[25px]
-                  h-[25px]
-                  flex
-                  items-center
-                  justify-center
-                  bg-[#080808]
-                  text-white
-                  rounded-full
-                  text-[13px]
+                  absolute
+                  right-0
+                  top-[45px]
+                  w-[180px]
+                  bg-[#111c1f]
+                  border
+                  border-white/10
+                  rounded-[8px]
+                  overflow-hidden
+                  shadow-xl
                 "
               >
-                {userData?.name?.slice(0, 1)}
+
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="
+                    w-full
+                    text-left
+                    px-[15px]
+                    py-[12px]
+                    text-white
+                    hover:bg-white/10
+                  "
+                >
+                  Profile
+                </button>
+
+
+                <button
+                  onClick={() => navigate("/orders")}
+                  className="
+                    w-full
+                    text-left
+                    px-[15px]
+                    py-[12px]
+                    text-white
+                    hover:bg-white/10
+                  "
+                >
+                  Orders
+                </button>
+
+
+                <button
+                  onClick={() =>
+                    setShowLogoutConfirm(true)
+                  }
+                  className="
+                    w-full
+                    text-left
+                    px-[15px]
+                    py-[12px]
+                    text-red-400
+                    hover:bg-white/10
+                  "
+                >
+                  Logout
+                </button>
+
               </div>
-
             )}
-
-            <p
-              className="
-                text-[12px]
-                font-semibold
-                text-[#282c3f]
-                mt-[2px]
-              "
-            >
-              Profile
-            </p>
 
           </div>
 
 
-          {/* ================= WISHLIST ================= */}
-
-          <div
-            className="
-              relative
-              flex
-              flex-col
-              items-center
-              justify-center
-              cursor-pointer
-              min-w-[50px]
-            "
+          {/* WISHLIST */}
+          <button
             onClick={() => navigate("/wishlist")}
           >
-
             <FaHeart
-              className="
-                w-[21px]
-                h-[21px]
-                text-[#282c3f]
-              "
+              className="w-[22px] h-[22px]"
             />
-
-            <p
-              className="
-                text-[12px]
-                font-semibold
-                text-[#282c3f]
-                mt-[4px]
-              "
-            >
-              Wishlist
-            </p>
+          </button>
 
 
-            {wishlist?.length > 0 && (
-
-              <p
-                className="
-                  absolute
-                  w-[17px]
-                  h-[17px]
-                  flex
-                  items-center
-                  justify-center
-                  bg-[#ff3f6c]
-                  text-white
-                  rounded-full
-                  text-[8px]
-                  -top-[7px]
-                  right-[1px]
-                "
-              >
-                {wishlist.length}
-              </p>
-
-            )}
-
-          </div>
-
-
-          {/* ================= BAG ================= */}
-
-          <div
-            className="
-              relative
-              flex
-              flex-col
-              items-center
-              justify-center
-              cursor-pointer
-              min-w-[40px]
-            "
+          {/* CART */}
+          <button
             onClick={() => navigate("/cart")}
+            className="relative"
           >
 
             <FiShoppingBag
-              className="
-                w-[22px]
-                h-[22px]
-                text-[#282c3f]
-              "
+              className="w-[25px] h-[25px]"
             />
 
-            <p
-              className="
-                text-[12px]
-                font-semibold
-                text-[#282c3f]
-                mt-[3px]
-              "
-            >
-              Bag
-            </p>
+            {cartCount > 0 && (
+              <span
+                className="
+                  absolute
+                  -top-[8px]
+                  -right-[8px]
+                  w-[18px]
+                  h-[18px]
+                  rounded-full
+                  bg-red-500
+                  text-white
+                  text-[10px]
+                  flex
+                  items-center
+                  justify-center
+                "
+              >
+                {cartCount}
+              </span>
+            )}
+
+          </button>
 
 
-            <p
-              className="
-                absolute
-                w-[17px]
-                h-[17px]
-                flex
-                items-center
-                justify-center
-                bg-[#ff3f6c]
-                text-white
-                rounded-full
-                text-[8px]
-                -top-[7px]
-                right-[-3px]
-              "
-            >
-              {getCartCount()}
-            </p>
-
-          </div>
+          {/* LOGOUT */}
+          <button
+            onClick={() =>
+              setShowLogoutConfirm(true)
+            }
+          >
+            <MdLogout
+              className="w-[25px] h-[25px]"
+            />
+          </button>
 
         </div>
 
       </div>
-
-
-      {/* ================================================= */}
-      {/* DESKTOP PROFILE DROPDOWN */}
-      {/* ================================================= */}
-
-      {showProfile && (
-
-        <div
-          className="
-            hidden
-            md:block
-            absolute
-            w-[220px]
-            h-[150px]
-            bg-[#000000e8]
-            top-[75px]
-            right-[4%]
-            border
-            border-[#aaa9a9]
-            rounded-[10px]
-            z-[9999]
-          "
-        >
-
-          <ul
-            className="
-              w-full
-              h-full
-              flex
-              items-center
-              justify-around
-              flex-col
-              text-[17px]
-              py-[10px]
-              text-white
-            "
-          >
-
-
-            {/* LOGIN */}
-
-            {!userData && (
-
-              <li
-                className="
-                  w-full
-                  hover:bg-[#2f2f2f]
-                  px-[15px]
-                  py-[10px]
-                  cursor-pointer
-                "
-                onClick={() => {
-
-                  navigate("/login");
-
-                  setShowProfile(false);
-
-                }}
-              >
-                Login
-              </li>
-
-            )}
-
-
-            {/* LOGOUT */}
-
-            {userData && (
-
-              <li
-                className={`
-                  w-full
-                  hover:bg-[#2f2f2f]
-                  px-[15px]
-                  py-[10px]
-                  cursor-pointer
-                  ${
-                    isLoggingOut
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }
-                `}
-                onClick={() => {
-
-                  if (!isLoggingOut) {
-                    setShowLogoutConfirm(true);
-                  }
-
-                }}
-              >
-
-                LogOut
-
-              </li>
-
-            )}
-
-
-            {/* ORDERS */}
-
-            <li
-              className="
-                w-full
-                hover:bg-[#2f2f2f]
-                px-[15px]
-                py-[10px]
-                cursor-pointer
-              "
-              onClick={() => {
-
-                navigate("/order");
-
-                setShowProfile(false);
-
-              }}
-            >
-              Orders
-            </li>
-
-
-            {/* ABOUT */}
-
-            <li
-              className="
-                w-full
-                hover:bg-[#2f2f2f]
-                px-[15px]
-                py-[10px]
-                cursor-pointer
-              "
-              onClick={() => {
-
-                navigate("/about");
-
-                setShowProfile(false);
-
-              }}
-            >
-              About
-            </li>
-
-          </ul>
-
-        </div>
-
-      )}
 
 
       {/* ================================================= */}
@@ -691,158 +355,133 @@ function Nav() {
 
       <div
         className="
-          w-full
-          h-[65px]
-          bg-[#0b1518]
+          md:hidden
           fixed
           top-0
           left-0
-          z-[9998]
-          md:hidden
+          w-full
+          h-[65px]
+          bg-[#0b1518]
+          z-[9999]
           flex
           items-center
           justify-between
           px-[15px]
-          border-b
-          border-white/10
+          shadow-lg
         "
       >
 
-
-        {/* ================= MENU ================= */}
-
+        {/* HAMBURGER */}
         <button
-          onClick={() =>
-            setShowMobileMenu((prev) => !prev)
-          }
+          onClick={() => {
+            setShowMobileMenu((prev) => !prev);
+            setShowMobileSearch(false);
+          }}
           className="
-            text-white
+            w-[40px]
+            h-[40px]
             flex
             items-center
             justify-center
-            active:scale-90
-            transition-all
+            text-white
           "
         >
 
           {showMobileMenu ? (
-
             <MdClose
-              className="w-[32px] h-[32px]"
+              className="w-[30px] h-[30px]"
             />
-
           ) : (
-
             <MdMenu
-              className="w-[32px] h-[32px]"
+              className="w-[30px] h-[30px]"
             />
-
           )}
 
         </button>
 
 
-        {/* ================= LOGO ================= */}
-
+        {/* ONECART */}
         <div
           onClick={() => navigate("/")}
           className="
-            flex
-            items-center
-            cursor-pointer
-            select-none
             absolute
-            left-[50%]
-            -translate-x-[50%]
+            left-1/2
+            -translate-x-1/2
+            cursor-pointer
           "
         >
 
-          <span
+          <p
             className="
               text-white
-              text-[25px]
-              font-bold
-              tracking-[-1px]
+              text-[22px]
+              font-semibold
+              tracking-wide
             "
           >
-            One
-          </span>
-
-          <span
-            className="
-              text-[#49d9f0]
-              text-[25px]
-              font-bold
-              tracking-[-1px]
-            "
-          >
-            Cart
-          </span>
+            OneCart
+          </p>
 
         </div>
 
 
-        {/* ================= RIGHT ICONS ================= */}
-
+        {/* RIGHT SIDE */}
         <div
           className="
             flex
             items-center
-            gap-[14px]
-            ml-auto
+            gap-[12px]
           "
         >
 
-
-          {/* SEARCH */}
-
+          {/* MOBILE SEARCH */}
           <button
-            onClick={handleSearch}
+            onClick={() => {
+              setShowMobileSearch((prev) => !prev);
+              setShowMobileMenu(false);
+            }}
             className="
-              text-white
+              w-[40px]
+              h-[40px]
               flex
               items-center
               justify-center
-              active:scale-90
-              transition-all
+              text-white
             "
           >
 
-            <IoSearchOutline
-              className="
-                w-[29px]
-                h-[29px]
-              "
-            />
+            {showMobileSearch ? (
+              <IoClose
+                className="w-[29px] h-[29px]"
+              />
+            ) : (
+              <IoSearchOutline
+                className="w-[29px] h-[29px]"
+              />
+            )}
 
           </button>
 
 
-          {/* LOGOUT */}
-
+          {/* MOBILE LOGOUT */}
           <button
             onClick={() => {
-
-              if (!isLoggingOut) {
-                setShowLogoutConfirm(true);
-              }
-
+              setShowLogoutConfirm(true);
+              setShowMobileMenu(false);
+              setShowMobileSearch(false);
             }}
             className="
-              text-white
+              w-[40px]
+              h-[40px]
               flex
               items-center
               justify-center
-              active:scale-90
-              transition-all
+              text-white
             "
           >
 
             <MdLogout
-              className="
-                w-[29px]
-                h-[29px]
-              "
+              className="w-[28px] h-[28px]"
             />
 
           </button>
@@ -853,140 +492,342 @@ function Nav() {
 
 
       {/* ================================================= */}
-      {/* MOBILE MENU */}
+      {/* MOBILE SEARCH BAR */}
       {/* ================================================= */}
 
-      {showMobileMenu && (
-
+      {showMobileSearch && (
         <div
           className="
             fixed
             top-[65px]
             left-0
             w-full
+            h-[60px]
             bg-[#0b1518]
+            px-[15px]
+            flex
+            items-center
+            z-[9998]
             border-b
             border-white/10
             md:hidden
-            z-[9997]
-            shadow-[0_8px_20px_rgba(0,0,0,0.35)]
           "
         >
 
-          <div className="flex flex-col px-[20px] py-[10px]">
+          <div
+            className="
+              w-full
+              h-[42px]
+              bg-white/[0.08]
+              border
+              border-white/10
+              rounded-[10px]
+              flex
+              items-center
+              px-[12px]
+            "
+          >
 
+            {/* SEARCH ICON */}
+            <IoSearchOutline
+              className="
+                w-[21px]
+                h-[21px]
+                text-[#bff1f9]
+                flex-shrink-0
+              "
+            />
+
+
+            {/* SEARCH INPUT */}
+            <input
+              type="text"
+              autoFocus
+              placeholder="Search products..."
+              value={search}
+              onChange={handleMobileSearch}
+              className="
+                w-full
+                h-full
+                bg-transparent
+                outline-none
+                px-[10px]
+                text-white
+                text-[14px]
+                placeholder:text-gray-500
+              "
+            />
+
+
+            {/* CLEAR SEARCH */}
+            {search && (
+              <button
+                onClick={clearMobileSearch}
+                className="
+                  text-gray-400
+                  flex-shrink-0
+                "
+              >
+
+                <IoClose
+                  className="
+                    w-[20px]
+                    h-[20px]
+                  "
+                />
+
+              </button>
+            )}
+
+          </div>
+
+        </div>
+      )}
+
+
+      {/* ================================================= */}
+      {/* MOBILE MENU */}
+      {/* ================================================= */}
+
+      {showMobileMenu && (
+        <div
+          className="
+            md:hidden
+            fixed
+            top-[65px]
+            left-0
+            w-full
+            bg-[#0b1518]
+            border-t
+            border-white/10
+            z-[9997]
+            shadow-xl
+          "
+        >
+
+          <div
+            className="
+              flex
+              flex-col
+              px-[20px]
+              py-[15px]
+            "
+          >
 
             {/* HOME */}
-
             <button
-              onClick={() =>
-                handleMobileNavigation("/")
-              }
+              onClick={() => {
+                navigate("/");
+                setShowMobileMenu(false);
+              }}
               className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
                 text-white
-                text-left
-                py-[14px]
                 border-b
                 border-white/10
-                text-[15px]
+                text-left
               "
             >
+
+              <MdHome
+                className="
+                  w-[24px]
+                  h-[24px]
+                "
+              />
+
               Home
+
             </button>
 
 
             {/* COLLECTIONS */}
-
             <button
-              onClick={() =>
-                handleMobileNavigation("/collections")
-              }
+              onClick={() => {
+                navigate("/collections");
+                setShowMobileMenu(false);
+              }}
               className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
                 text-white
-                text-left
-                py-[14px]
                 border-b
                 border-white/10
-                text-[15px]
+                text-left
               "
             >
+
+              <HiOutlineCollection
+                className="
+                  w-[24px]
+                  h-[24px]
+                "
+              />
+
               Collections
+
+            </button>
+
+
+            {/* PROFILE */}
+            <button
+              onClick={() => {
+                navigate("/profile");
+                setShowMobileMenu(false);
+              }}
+              className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
+                text-white
+                border-b
+                border-white/10
+                text-left
+              "
+            >
+
+              <IoPersonOutline
+                className="
+                  w-[24px]
+                  h-[24px]
+                "
+              />
+
+              Profile
+
             </button>
 
 
             {/* WISHLIST */}
-
             <button
-              onClick={() =>
-                handleMobileNavigation("/wishlist")
-              }
+              onClick={() => {
+                navigate("/wishlist");
+                setShowMobileMenu(false);
+              }}
               className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
                 text-white
-                text-left
-                py-[14px]
                 border-b
                 border-white/10
-                text-[15px]
+                text-left
               "
             >
+
+              <FaHeart
+                className="
+                  w-[22px]
+                  h-[22px]
+                "
+              />
+
               Wishlist
+
             </button>
 
 
-            {/* ORDERS */}
-
+            {/* CART */}
             <button
-              onClick={() =>
-                handleMobileNavigation("/order")
-              }
+              onClick={() => {
+                navigate("/cart");
+                setShowMobileMenu(false);
+              }}
               className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
                 text-white
-                text-left
-                py-[14px]
                 border-b
                 border-white/10
-                text-[15px]
+                text-left
               "
             >
-              Orders
+
+              <FiShoppingBag
+                className="
+                  w-[24px]
+                  h-[24px]
+                "
+              />
+
+              <span>
+                Cart
+              </span>
+
+              {cartCount > 0 && (
+                <span
+                  className="
+                    ml-auto
+                    bg-red-500
+                    text-white
+                    text-[11px]
+                    min-w-[22px]
+                    h-[22px]
+                    rounded-full
+                    flex
+                    items-center
+                    justify-center
+                  "
+                >
+                  {cartCount}
+                </span>
+              )}
+
             </button>
 
 
-            {/* ABOUT */}
-
+            {/* CONTACT */}
             <button
-              onClick={() =>
-                handleMobileNavigation("/about")
-              }
+              onClick={() => {
+                navigate("/contact");
+                setShowMobileMenu(false);
+              }}
               className="
+                flex
+                items-center
+                gap-[15px]
+                py-[15px]
                 text-white
                 text-left
-                py-[14px]
-                text-[15px]
               "
             >
-              About
+
+              <MdPermContactCalendar
+                className="
+                  w-[24px]
+                  h-[24px]
+                "
+              />
+
+              Contact
+
             </button>
 
           </div>
 
         </div>
-
       )}
 
 
       {/* ================================================= */}
-      {/* MOBILE LOGOUT CONFIRMATION */}
+      {/* LOGOUT CONFIRMATION MODAL */}
       {/* ================================================= */}
 
       {showLogoutConfirm && (
-
         <div
           className="
             fixed
             inset-0
-            bg-black/60
-            backdrop-blur-[3px]
+            bg-black/70
             z-[10000]
             flex
             items-center
@@ -998,54 +839,25 @@ function Nav() {
           <div
             className="
               w-full
-              max-w-[330px]
-              bg-[#101c1f]
+              max-w-[380px]
+              bg-[#101b1e]
+              rounded-[14px]
+              p-[25px]
               border
               border-white/10
-              rounded-[16px]
-              p-[25px]
-              shadow-[0_10px_40px_rgba(0,0,0,0.5)]
+              shadow-2xl
             "
           >
-
-            {/* ICON */}
-
-            <div
-              className="
-                w-[55px]
-                h-[55px]
-                mx-auto
-                rounded-full
-                bg-[#49d9f0]/10
-                border
-                border-[#49d9f0]/20
-                flex
-                items-center
-                justify-center
-                mb-[15px]
-              "
-            >
-
-              <MdLogout
-                className="
-                  text-[#49d9f0]
-                  w-[28px]
-                  h-[28px]
-                "
-              />
-
-            </div>
-
 
             <h2
               className="
                 text-white
                 text-[20px]
                 font-semibold
-                text-center
+                mb-[10px]
               "
             >
-              Logout?
+              Logout
             </h2>
 
 
@@ -1053,43 +865,35 @@ function Nav() {
               className="
                 text-gray-400
                 text-[14px]
-                text-center
-                mt-[8px]
-                leading-[1.5]
+                mb-[25px]
               "
             >
               Are you sure you want to logout?
             </p>
 
 
-            {/* BUTTONS */}
-
             <div
               className="
                 flex
-                items-center
                 gap-[10px]
-                mt-[22px]
+                justify-end
               "
             >
 
               {/* CANCEL */}
-
               <button
                 onClick={() =>
                   setShowLogoutConfirm(false)
                 }
                 disabled={isLoggingOut}
                 className="
-                  flex-1
-                  h-[43px]
-                  rounded-[9px]
-                  border
-                  border-white/15
+                  px-[18px]
+                  py-[10px]
+                  rounded-[8px]
+                  bg-white/10
                   text-white
                   text-[14px]
-                  hover:bg-white/5
-                  transition-all
+                  hover:bg-white/20
                 "
               >
                 Cancel
@@ -1097,21 +901,17 @@ function Nav() {
 
 
               {/* LOGOUT */}
-
               <button
                 onClick={handleLogOut}
                 disabled={isLoggingOut}
                 className="
-                  flex-1
-                  h-[43px]
-                  rounded-[9px]
-                  bg-[#49d9f0]
-                  text-black
-                  font-semibold
+                  px-[18px]
+                  py-[10px]
+                  rounded-[8px]
+                  bg-red-500
+                  text-white
                   text-[14px]
-                  hover:opacity-90
-                  transition-all
-                  disabled:opacity-50
+                  hover:bg-red-600
                 "
               >
 
@@ -1126,7 +926,6 @@ function Nav() {
           </div>
 
         </div>
-
       )}
 
 
@@ -1136,27 +935,26 @@ function Nav() {
 
       <div
         className="
-          w-full
-          h-[75px]
+          w-[100vw]
+          h-[90px]
           flex
           items-center
-          justify-around
-          fixed
+          justify-center
           bottom-0
           left-0
+          fixed
           bg-[#191818]
           md:hidden
           text-sm
-          z-[9999]
-          border-t
-          border-white/10
+          px-[20px]
+          gap-3.5
+          z-[9996]
         "
       >
 
-
         {/* HOME */}
-
         <button
+          onClick={() => navigate("/")}
           className="
             text-white
             flex
@@ -1165,25 +963,25 @@ function Nav() {
             flex-col
             gap-[2px]
           "
-          onClick={() => navigate("/")}
         >
 
           <MdHome
             className="
-              w-[28px]
-              h-[28px]
-              text-white
+              w-[25px]
+              h-[25px]
             "
           />
 
-          Home
+          <span>
+            Home
+          </span>
 
         </button>
 
 
-        {/* COLLECTIONS */}
-
+        {/* COLLECTION */}
         <button
+          onClick={() => navigate("/collections")}
           className="
             text-white
             flex
@@ -1192,184 +990,127 @@ function Nav() {
             flex-col
             gap-[2px]
           "
-          onClick={() => navigate("/collections")}
         >
 
           <HiOutlineCollection
             className="
-              w-[28px]
-              h-[28px]
-              text-white
+              w-[25px]
+              h-[25px]
             "
           />
 
-          Collections
-
-        </button>
-
-
-        {/* WISHLIST */}
-
-        <div className="relative">
-
-          <button
-            className="
-              text-white
-              flex
-              items-center
-              justify-center
-              flex-col
-              gap-[2px]
-            "
-            onClick={() => navigate("/wishlist")}
-          >
-
-            <FaHeart
-              className="
-                w-[25px]
-                h-[25px]
-                text-white
-              "
-            />
-
-            <span>
-              Wishlist
-            </span>
-
-          </button>
-
-
-          {wishlist?.length > 0 && (
-
-            <p
-              className="
-                absolute
-                w-[18px]
-                h-[18px]
-                flex
-                items-center
-                justify-center
-                bg-[#ff3f6c]
-                text-white
-                font-bold
-                rounded-full
-                text-[9px]
-                -top-2
-                -right-2
-              "
-            >
-              {wishlist.length}
-            </p>
-
-          )}
-
-        </div>
-
-
-        {/* CONTACT */}
-
-        <button
-          className="
-            text-white
-            flex
-            items-center
-            justify-center
-            flex-col
-            gap-[2px]
-          "
-          onClick={() => navigate("/contact")}
-        >
-
-          <MdPermContactCalendar
-            className="
-              w-[28px]
-              h-[28px]
-              text-white
-            "
-          />
-
-          Contact
+          <span>
+            Collection
+          </span>
 
         </button>
 
 
         {/* CART */}
+        <button
+          onClick={() => navigate("/cart")}
+          className="
+            text-white
+            flex
+            items-center
+            justify-center
+            flex-col
+            gap-[2px]
+            relative
+          "
+        >
 
-        <div className="relative">
-
-          <button
+          <FiShoppingBag
             className="
-              text-white
-              flex
-              items-center
-              justify-center
-              flex-col
-              gap-[2px]
+              w-[25px]
+              h-[25px]
             "
-            onClick={() => navigate("/cart")}
-          >
+          />
 
-            <FiShoppingBag
+          {cartCount > 0 && (
+            <span
               className="
-                w-[28px]
-                h-[28px]
+                absolute
+                top-[-5px]
+                right-[-5px]
+                bg-red-500
                 text-white
+                w-[17px]
+                h-[17px]
+                rounded-full
+                text-[9px]
+                flex
+                items-center
+                justify-center
               "
-            />
+            >
+              {cartCount}
+            </span>
+          )}
 
+          <span>
             Cart
+          </span>
 
-          </button>
+        </button>
 
 
-          <p
+        {/* WISHLIST */}
+        <button
+          onClick={() => navigate("/wishlist")}
+          className="
+            text-white
+            flex
+            items-center
+            justify-center
+            flex-col
+            gap-[2px]
+          "
+        >
+
+          <FaHeart
             className="
-              absolute
-              w-[18px]
-              h-[18px]
-              flex
-              items-center
-              justify-center
-              bg-white
-              text-black
-              font-bold
-              rounded-full
-              text-[9px]
-              -top-2
-              -right-2
+              w-[23px]
+              h-[23px]
             "
-          >
-            {getCartCount()}
-          </p>
+          />
 
-        </div>
+          <span>
+            Wishlist
+          </span>
+
+        </button>
+
+
+        {/* PROFILE */}
+        <button
+          onClick={() => navigate("/profile")}
+          className="
+            text-white
+            flex
+            items-center
+            justify-center
+            flex-col
+            gap-[2px]
+          "
+        >
+
+          <IoPersonOutline
+            className="
+              w-[25px]
+              h-[25px]
+            "
+          />
+
+          <span>
+            Profile
+          </span>
+
+        </button>
 
       </div>
 
-
-      {/* ================================================= */}
-      {/* OLD SEARCH DROPDOWN */}
-      {/* ================================================= */}
-
-      {showSearch && (
-
-        <div className="hidden">
-
-          <input
-            type="text"
-            placeholder="Search here"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-            value={search}
-          />
-
-        </div>
-
-      )}
-
-    </div>
-
+    </>
   );
 }
 
