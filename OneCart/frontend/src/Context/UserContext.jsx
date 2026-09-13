@@ -11,6 +11,7 @@ import axios from "axios";
 export const userDataContext = createContext();
 
 function UserContext({ children }) {
+
   // ================= USER DATA =================
 
   const [userData, setUserData] = useState(null);
@@ -23,16 +24,22 @@ function UserContext({ children }) {
 
   const { serverUrl } = useContext(authDataContext);
 
+
   // ======================================================
   // GET CURRENT USER
   // ======================================================
 
   const getCurrentUser = async () => {
+
     try {
+
       const result = await axios.get(
         serverUrl + "/api/user/getcurrentuser",
         {
           withCredentials: true,
+
+          // Prevent infinite waiting if Render/API doesn't respond
+          timeout: 15000,
         }
       );
 
@@ -41,7 +48,9 @@ function UserContext({ children }) {
       console.log("Current User:", result.data);
 
       return result.data;
+
     } catch (error) {
+
       setUserData(null);
 
       console.log(
@@ -50,18 +59,27 @@ function UserContext({ children }) {
       );
 
       return null;
+
     } finally {
+
+      // VERY IMPORTANT
+      // This always runs whether request succeeds or fails
       setLoading(false);
+
     }
   };
+
 
   // ======================================================
   // CHECK USER WHEN APP STARTS
   // ======================================================
 
   useEffect(() => {
+
     getCurrentUser();
-  }, []);
+
+  }, [serverUrl]);
+
 
   // ======================================================
   // CONTEXT VALUE
@@ -74,11 +92,13 @@ function UserContext({ children }) {
     loading,
   };
 
+
   return (
     <userDataContext.Provider value={value}>
       {children}
     </userDataContext.Provider>
   );
 }
+
 
 export default UserContext;

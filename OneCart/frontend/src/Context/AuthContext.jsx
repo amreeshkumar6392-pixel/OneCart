@@ -9,11 +9,11 @@ function AuthContext({ children }) {
   };
 
   return (
-    <>
+    
       <authDataContext.Provider value={value}>
         {children}
       </authDataContext.Provider>
-    </>
+    
   );
 }
 
