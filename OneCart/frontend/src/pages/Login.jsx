@@ -36,6 +36,7 @@ import {
 import {
   auth,
   provider,
+  authReady,
 } from "../../utils/Firebase";
 
 import { userDataContext } from "../Context/UserContext";
@@ -47,7 +48,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
 
-  const { serverUrl } = useContext(authDataContext);
+  const { serverUrl } =
+    useContext(authDataContext);
 
   const { getCurrentUser } =
     useContext(userDataContext);
@@ -67,10 +69,15 @@ function Login() {
 
       try {
 
-        // Wait for Firebase Auth persistence
-        await new Promise((resolve) =>
-          setTimeout(resolve, 500)
+        // Wait until Firebase persistence
+        // is completely ready
+        await authReady;
+
+
+        console.log(
+          "Checking Google redirect result..."
         );
+
 
         const response =
           await getRedirectResult(auth);
@@ -94,10 +101,13 @@ function Login() {
         const email = user.email;
 
 
-        console.log("Google User:", {
-          name,
-          email,
-        });
+        console.log(
+          "Google User:",
+          {
+            name,
+            email,
+          }
+        );
 
 
         // =================================================
@@ -105,14 +115,18 @@ function Login() {
         // =================================================
 
         const result = await axios.post(
+
           serverUrl + "/api/googlelogin",
+
           {
             name,
             email,
           },
+
           {
             withCredentials: true,
           }
+
         );
 
 
@@ -126,7 +140,19 @@ function Login() {
         // GET CURRENT USER
         // =================================================
 
-        await getCurrentUser();
+        const currentUser =
+          await getCurrentUser();
+
+
+        if (!currentUser) {
+
+          console.log(
+            "Google login succeeded, but current user could not be loaded."
+          );
+
+          return;
+
+        }
 
 
         // =================================================
@@ -156,10 +182,16 @@ function Login() {
 
 
     return () => {
+
       isMounted = false;
+
     };
 
-  }, [serverUrl]);
+  }, [
+    serverUrl,
+    getCurrentUser,
+    navigate,
+  ]);
 
 
   // =====================================================
@@ -173,22 +205,49 @@ function Login() {
     try {
 
       const result = await axios.post(
+
         serverUrl + "/api/login",
+
         {
           email,
           password,
         },
+
         {
           withCredentials: true,
         }
+
       );
 
 
-      console.log(result.data);
+      console.log(
+        "Login Response:",
+        result.data
+      );
 
 
-      await getCurrentUser();
+      // =================================================
+      // GET CURRENT USER
+      // =================================================
 
+      const currentUser =
+        await getCurrentUser();
+
+
+      if (!currentUser) {
+
+        console.log(
+          "Login succeeded, but current user could not be loaded."
+        );
+
+        return;
+
+      }
+
+
+      // =================================================
+      // GO TO HOME
+      // =================================================
 
       navigate("/", {
         replace: true,
@@ -204,6 +263,7 @@ function Login() {
       );
 
     }
+
   };
 
 
@@ -215,10 +275,22 @@ function Login() {
 
     try {
 
+      // IMPORTANT:
+      // Wait until Firebase persistence
+      // has been configured before redirecting
+      await authReady;
+
+
+      console.log(
+        "Starting Google Login..."
+      );
+
+
       await signInWithRedirect(
         auth,
         provider
       );
+
 
     } catch (error) {
 
@@ -377,10 +449,13 @@ function Login() {
                 tracking-wide
               "
             >
+
               One
+
               <span className="text-[#9de7f2]">
                 Cart
               </span>
+
             </h1>
 
           </div>
@@ -418,12 +493,15 @@ function Login() {
                 mt-[14px]
               "
             >
+
               Shop More,
+
               <br />
 
               <span className="text-[#9de7f2]">
                 Live Better.
               </span>
+
             </h2>
 
 
@@ -436,10 +514,12 @@ function Login() {
                 mt-[20px]
               "
             >
+
               Sign in to continue your shopping
               journey and discover the latest
               styles, quality products, and
               exclusive deals.
+
             </p>
 
 
@@ -829,6 +909,7 @@ function Login() {
                   leading-tight
                 "
               >
+
                 Login to{" "}
 
                 <span className="text-[#9de7f2]">
@@ -846,6 +927,7 @@ function Login() {
                   mt-[8px]
                 "
               >
+
                 Don't have an account?
 
                 <span
@@ -1224,7 +1306,9 @@ function Login() {
       </div>
 
 
-      {/* Copyright */}
+      {/* ================================================= */}
+      {/* COPYRIGHT */}
+      {/* ================================================= */}
 
       <p
         className="
@@ -1236,12 +1320,16 @@ function Login() {
           md:block
         "
       >
+
         © {new Date().getFullYear()}
         {" "}OneCart. All rights reserved.
+
       </p>
 
     </div>
+
   );
+
 }
 
 export default Login;

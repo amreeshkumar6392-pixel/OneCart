@@ -7,6 +7,7 @@ import {
 
 import { initializeApp } from "firebase/app";
 
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
   authDomain: "loginonecart-8ef12.firebaseapp.com",
@@ -16,13 +17,31 @@ const firebaseConfig = {
   appId: "1:381338219427:web:f74931c7ab92eba66fe016"
 };
 
-// Initialize Firebase
+
+// ======================================================
+// INITIALIZE FIREBASE
+// ======================================================
+
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-// Firebase Auth persistence
-setPersistence(auth, browserLocalPersistence)
+
+// ======================================================
+// GOOGLE PROVIDER
+// ======================================================
+
+const provider = new GoogleAuthProvider();
+
+
+// ======================================================
+// FIREBASE AUTH PERSISTENCE
+// ======================================================
+
+const authReady = setPersistence(
+  auth,
+  browserLocalPersistence
+)
   .then(() => {
     console.log("Firebase persistence enabled");
   })
@@ -33,6 +52,13 @@ setPersistence(auth, browserLocalPersistence)
     );
   });
 
-const provider = new GoogleAuthProvider();
 
-export { auth, provider };
+// ======================================================
+// EXPORT
+// ======================================================
+
+export {
+  auth,
+  provider,
+  authReady
+};
