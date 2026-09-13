@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 export const shopDataContext = createContext();
 
 function ShopContext({ children }) {
+
   // =========================
   // STATES
   // =========================
@@ -43,7 +44,9 @@ function ShopContext({ children }) {
   // =========================
 
   const getProducts = async () => {
+
     try {
+
       const result = await axios.get(
         serverUrl + "/api/product/list"
       );
@@ -53,10 +56,12 @@ function ShopContext({ children }) {
       setProducts(result.data.products);
 
     } catch (error) {
+
       console.log(
         "Get Products Error:",
         error.response?.data || error.message
       );
+
     }
   };
 
@@ -68,9 +73,13 @@ function ShopContext({ children }) {
   const addToCart = async (itemId, size) => {
 
     if (!size) {
+
       console.log("Please select a size");
+
       toast.error("Please select a size");
+
       return;
+
     }
 
     let cartData = structuredClone(cartItem);
@@ -78,14 +87,19 @@ function ShopContext({ children }) {
     if (cartData[itemId]) {
 
       if (cartData[itemId][size]) {
+
         cartData[itemId][size] += 1;
+
       } else {
+
         cartData[itemId][size] = 1;
+
       }
 
     } else {
 
       cartData[itemId] = {};
+
       cartData[itemId][size] = 1;
 
     }
@@ -94,6 +108,7 @@ function ShopContext({ children }) {
 
 
     // Save cart to database if user is logged in
+
     if (userData) {
 
       try {
@@ -119,7 +134,9 @@ function ShopContext({ children }) {
         );
 
       }
+
     }
+
   };
 
 
@@ -130,8 +147,11 @@ function ShopContext({ children }) {
   const getUserCart = async () => {
 
     if (!userData) {
+
       setCartItem({});
+
       return;
+
     }
 
     try {
@@ -145,7 +165,9 @@ function ShopContext({ children }) {
 
       console.log(response.data);
 
-      setCartItem(response.data.cartData || {});
+      setCartItem(
+        response.data.cartData || {}
+      );
 
     } catch (error) {
 
@@ -155,6 +177,7 @@ function ShopContext({ children }) {
       );
 
     }
+
   };
 
 
@@ -171,7 +194,9 @@ function ShopContext({ children }) {
     let cartDataCopy = structuredClone(cartItem);
 
     if (!cartDataCopy[itemId]) {
+
       return;
+
     }
 
 
@@ -182,7 +207,9 @@ function ShopContext({ children }) {
       if (
         Object.keys(cartDataCopy[itemId]).length === 0
       ) {
+
         delete cartDataCopy[itemId];
+
       }
 
     } else {
@@ -196,6 +223,7 @@ function ShopContext({ children }) {
 
 
     // Update database
+
     if (userData) {
 
       try {
@@ -223,8 +251,11 @@ function ShopContext({ children }) {
           error.response?.data?.message ||
           error.message
         );
+
       }
+
     }
+
   };
 
 
@@ -242,10 +273,13 @@ function ShopContext({ children }) {
 
         if (cartItem[items][size] > 0) {
 
-          totalCount += cartItem[items][size];
+          totalCount +=
+            cartItem[items][size];
 
         }
+
       }
+
     }
 
     return totalCount;
@@ -254,7 +288,9 @@ function ShopContext({ children }) {
 
 
   const getCartCount = () => {
+
     return cartCount;
+
   };
 
 
@@ -280,6 +316,7 @@ function ShopContext({ children }) {
       );
 
     }
+
   };
 
 
@@ -310,11 +347,15 @@ function ShopContext({ children }) {
               cartItem[items][size];
 
           }
+
         }
+
       }
+
     }
 
     return totalAmount;
+
   };
 
 
@@ -336,9 +377,13 @@ function ShopContext({ children }) {
   useEffect(() => {
 
     if (userData) {
+
       getUserCart();
+
     } else {
+
       setCartItem({});
+
     }
 
   }, [userData, serverUrl]);
@@ -377,7 +422,7 @@ function ShopContext({ children }) {
     // WISHLIST
     wishlist,
     addToWishlist,
-    wishlistCount,
+
   };
 
 
@@ -386,6 +431,7 @@ function ShopContext({ children }) {
       {children}
     </shopDataContext.Provider>
   );
+
 }
 
 export default ShopContext;
