@@ -1,6 +1,6 @@
 import React, {
   useContext,
-  useEffect,
+ 
   useState,
 } from "react";
 
@@ -29,8 +29,7 @@ import { authDataContext } from "../Context/AuthContext";
 import axios from "axios";
 
 import {
-  signInWithRedirect,
-
+  signInWithPopup,
 } from "firebase/auth";
 
 import {
@@ -140,107 +139,63 @@ function Login() {
   // GOOGLE LOGIN
   // =====================================================
 
-  const googleLogin = async () => {
-
+const googleLogin = async () => {
   try {
-
-    // Wait for Firebase persistence
     await authReady;
 
     console.log("Starting Google Login...");
-
-
-    // =================================================
-    // GOOGLE POPUP LOGIN
-    // =================================================
 
     const response = await signInWithPopup(
       auth,
       provider
     );
 
-
-    // =================================================
-    // GET FIREBASE USER
-    // =================================================
-
     const user = response.user;
 
     const name = user.displayName;
     const email = user.email;
 
-
     console.log("Google User:", {
       name,
-      email,
+      email
     });
 
-
-    // =================================================
-    // SEND USER TO ONECART BACKEND
-    // =================================================
-
     const result = await axios.post(
-
       serverUrl + "/api/googlelogin",
-
       {
         name,
-        email,
+        email
       },
-
       {
-        withCredentials: true,
+        withCredentials: true
       }
-
     );
-
 
     console.log(
       "Google Login Backend Response:",
       result.data
     );
 
-
-    // =================================================
-    // GET CURRENT USER
-    // =================================================
-
-    const currentUser =
-      await getCurrentUser();
-
+    const currentUser = await getCurrentUser();
 
     if (!currentUser) {
-
       console.log(
         "Google login succeeded, but current user could not be loaded."
       );
-
       return;
-
     }
 
-
-    // =================================================
-    // GO TO HOME
-    // =================================================
-
     navigate("/", {
-      replace: true,
+      replace: true
     });
 
-
   } catch (error) {
-
     console.log(
       "Google Login Error:",
       error.code || "",
-      error.response?.data ||
-        error.message
+      error.response?.data || error.message
     );
-
   }
-
 };
 
 
