@@ -5,6 +5,7 @@ import { IoSearchOutline, IoClose } from "react-icons/io5";
 import { IoPersonOutline } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
+
 import {
   MdHome,
   MdPermContactCalendar,
@@ -12,6 +13,7 @@ import {
   MdClose,
   MdLogout,
 } from "react-icons/md";
+
 import { HiOutlineCollection } from "react-icons/hi";
 
 import logo from "../assets/logo.png";
@@ -25,24 +27,32 @@ import axios from "axios";
 function Nav() {
   const navigate = useNavigate();
 
-  const { userData, setUserData } = useContext(userDataContext);
-  const { serverUrl } = useContext(authDataContext);
+  const { userData, setUserData } =
+    useContext(userDataContext);
 
-const {
-  cartCount,
-  wishlist,
-  search,
-  setSearch,
-  showSearch,
-  setShowSearch,
-} = useContext(shopDataContext);
+  const { serverUrl } =
+    useContext(authDataContext);
+
+  const {
+    cartCount,
+    wishlist,
+    search,
+    setSearch,
+    showSearch,
+    setShowSearch,
+  } = useContext(shopDataContext);
 
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] =
+    useState(false);
 
-  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] =
+    useState(false);
+
+  const [showMobileSearch, setShowMobileSearch] =
+    useState(false);
+
 
   // =========================
   // LOGOUT
@@ -68,17 +78,21 @@ const {
       setShowMobileMenu(false);
       setShowLogoutConfirm(false);
 
-      navigate("/login", { replace: true });
+      navigate("/login", {
+        replace: true,
+      });
 
     } catch (error) {
       console.log(
         "Logout Error:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
     } finally {
       setIsLoggingOut(false);
     }
   };
+
 
   // =========================
   // MOBILE SEARCH
@@ -95,10 +109,12 @@ const {
     }
   };
 
+
   const clearMobileSearch = () => {
     setSearch("");
     setShowSearch(false);
   };
+
 
   return (
     <>
@@ -134,20 +150,23 @@ const {
           className="
             flex
             items-center
+            justify-start
             cursor-pointer
-            w-[150px]
+            w-[120px]
             flex-shrink-0
           "
         >
+
           <img
             src={logo}
             alt="OneCart"
             className="
-              w-[85px]
+              w-[50px]
               h-auto
               object-contain
             "
           />
+
         </div>
 
 
@@ -172,25 +191,19 @@ const {
               relative
               h-full
               px-[18px]
-              text-[13px]
+              text-[16px]
               font-semibold
-              tracking-[0.5px]
+              tracking-[0.2px]
               text-[#282c3f]
               uppercase
               cursor-pointer
               transition-all
-              duration-200
+              duration-300
               hover:text-[#ff3f6c]
-              after:absolute
-              after:bottom-0
-              after:left-[18px]
-              after:right-[18px]
-              after:h-[3px]
-              after:bg-[#ff3f6c]
-              after:scale-x-0
-              hover:after:scale-x-100
-              after:transition-transform
-              after:duration-200
+              no-underline
+              bg-transparent
+              border-none
+              outline-none
             "
           >
             Home
@@ -205,25 +218,19 @@ const {
               relative
               h-full
               px-[18px]
-              text-[13px]
+              text-[16px]
               font-semibold
-              tracking-[0.5px]
+              tracking-[0.2px]
               text-[#282c3f]
               uppercase
               cursor-pointer
               transition-all
-              duration-200
+              duration-300
               hover:text-[#ff3f6c]
-              after:absolute
-              after:bottom-0
-              after:left-[18px]
-              after:right-[18px]
-              after:h-[3px]
-              after:bg-[#ff3f6c]
-              after:scale-x-0
-              hover:after:scale-x-100
-              after:transition-transform
-              after:duration-200
+              no-underline
+              bg-transparent
+              border-none
+              outline-none
             "
           >
             Collections
@@ -238,25 +245,19 @@ const {
               relative
               h-full
               px-[18px]
-              text-[13px]
+              text-[16px]
               font-semibold
-              tracking-[0.5px]
+              tracking-[0.2px]
               text-[#282c3f]
               uppercase
               cursor-pointer
               transition-all
-              duration-200
+              duration-300
               hover:text-[#ff3f6c]
-              after:absolute
-              after:bottom-0
-              after:left-[18px]
-              after:right-[18px]
-              after:h-[3px]
-              after:bg-[#ff3f6c]
-              after:scale-x-0
-              hover:after:scale-x-100
-              after:transition-transform
-              after:duration-200
+              no-underline
+              bg-transparent
+              border-none
+              outline-none
             "
           >
             About
@@ -271,25 +272,19 @@ const {
               relative
               h-full
               px-[18px]
-              text-[13px]
+              text-[16px]
               font-semibold
-              tracking-[0.5px]
+              tracking-[0.2px]
               text-[#282c3f]
               uppercase
               cursor-pointer
               transition-all
-              duration-200
+              duration-300
               hover:text-[#ff3f6c]
-              after:absolute
-              after:bottom-0
-              after:left-[18px]
-              after:right-[18px]
-              after:h-[3px]
-              after:bg-[#ff3f6c]
-              after:scale-x-0
-              hover:after:scale-x-100
-              after:transition-transform
-              after:duration-200
+              no-underline
+              bg-transparent
+              border-none
+              outline-none
             "
           >
             Contact
@@ -394,7 +389,6 @@ const {
                   "
                 />
 
-
                 <input
                   type="text"
                   autoFocus
@@ -402,7 +396,8 @@ const {
                   value={search}
                   onChange={(e) => {
 
-                    const value = e.target.value;
+                    const value =
+                      e.target.value;
 
                     setSearch(value);
 
@@ -422,7 +417,6 @@ const {
                     placeholder:text-gray-400
                   "
                 />
-
 
                 {search && (
                   <button
@@ -457,7 +451,9 @@ const {
 
             <button
               onClick={() => {
-                setShowProfile((prev) => !prev);
+                setShowProfile(
+                  (prev) => !prev
+                );
                 setShowSearch(false);
               }}
               className="
@@ -580,62 +576,61 @@ const {
 
 
           {/* ========================= */}
-      
-{/* WISHLIST */}
-{/* ========================= */}
+          {/* WISHLIST */}
+          {/* ========================= */}
 
-<button
-  onClick={() => navigate("/wishlist")}
-  className="
-    relative
-    w-[42px]
-    h-[42px]
-    rounded-full
-    flex
-    items-center
-    justify-center
-    text-[#282c3f]
-    hover:text-[#ff3f6c]
-    hover:bg-[#f7f7f7]
-    transition-all
-    duration-300
-    cursor-pointer
-  "
->
+          <button
+            onClick={() => navigate("/wishlist")}
+            className="
+              relative
+              w-[42px]
+              h-[42px]
+              rounded-full
+              flex
+              items-center
+              justify-center
+              text-[#282c3f]
+              hover:text-[#ff3f6c]
+              hover:bg-[#f7f7f7]
+              transition-all
+              duration-300
+              cursor-pointer
+            "
+          >
 
-  <FaHeart
-    className="
-      w-[18px]
-      h-[18px]
-    "
-  />
+            <FaHeart
+              className="
+                w-[18px]
+                h-[18px]
+              "
+            />
 
-  {wishlist.length > 0 && (
-    <span
-      className="
-        absolute
-        top-[1px]
-        right-[0px]
-        min-w-[17px]
-        h-[17px]
-        px-[4px]
-        rounded-full
-        bg-[#ff3f6c]
-        text-white
-        text-[9px]
-        font-bold
-        flex
-        items-center
-        justify-center
-        border
-        border-white
-      "
-    >
-      {wishlist.length}
-    </span>
-  )}
+            {wishlist.length > 0 && (
+              <span
+                className="
+                  absolute
+                  top-[1px]
+                  right-[0px]
+                  min-w-[17px]
+                  h-[17px]
+                  px-[4px]
+                  rounded-full
+                  bg-[#ff3f6c]
+                  text-white
+                  text-[9px]
+                  font-bold
+                  flex
+                  items-center
+                  justify-center
+                  border
+                  border-white
+                "
+              >
+                {wishlist.length}
+              </span>
+            )}
 
-</button>
+          </button>
 
 
           {/* ========================= */}
@@ -667,7 +662,6 @@ const {
                 h-[21px]
               "
             />
-
 
             {cartCount > 0 && (
               <span
@@ -727,7 +721,10 @@ const {
 
         <button
           onClick={() => {
-            setShowMobileMenu((prev) => !prev);
+            setShowMobileMenu(
+              (prev) => !prev
+            );
+
             setShowMobileSearch(false);
           }}
           className="
@@ -742,11 +739,17 @@ const {
 
           {showMobileMenu ? (
             <MdClose
-              className="w-[30px] h-[30px]"
+              className="
+                w-[30px]
+                h-[30px]
+              "
             />
           ) : (
             <MdMenu
-              className="w-[30px] h-[30px]"
+              className="
+                w-[30px]
+                h-[30px]
+              "
             />
           )}
 
@@ -793,7 +796,10 @@ const {
 
           <button
             onClick={() => {
-              setShowMobileSearch((prev) => !prev);
+              setShowMobileSearch(
+                (prev) => !prev
+              );
+
               setShowMobileMenu(false);
             }}
             className="
@@ -808,11 +814,17 @@ const {
 
             {showMobileSearch ? (
               <IoClose
-                className="w-[29px] h-[29px]"
+                className="
+                  w-[29px]
+                  h-[29px]
+                "
               />
             ) : (
               <IoSearchOutline
-                className="w-[29px] h-[29px]"
+                className="
+                  w-[29px]
+                  h-[29px]
+                "
               />
             )}
 
@@ -838,7 +850,10 @@ const {
           >
 
             <MdLogout
-              className="w-[28px] h-[28px]"
+              className="
+                w-[28px]
+                h-[28px]
+              "
             />
 
           </button>

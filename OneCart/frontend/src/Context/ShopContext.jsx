@@ -377,6 +377,7 @@ function ShopContext({ children }) {
     // WISHLIST
     wishlist,
     addToWishlist,
+    wishlistCount,
   };
 
 

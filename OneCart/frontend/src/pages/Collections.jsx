@@ -174,30 +174,29 @@ function Collections() {
 
   return (
 
-<div className='w-full min-h-screen bg-gradient-to-br from-[#081719] via-[#0c2025] to-[#141414] flex flex-col md:flex-row pt-[85px] md:pt-[72px] pb-[100px] overflow-x-hidden'>
+<div className='w-full min-h-screen bg-gradient-to-br from-[#081719] via-[#0c2025] to-[#141414] flex flex-col md:flex-row pt-0 pb-[100px] overflow-x-hidden'>
 
 
       {/* ================= FILTER SIDEBAR ================= */}
-
-      <div
-        className={`
-          md:w-[280px]
-          lg:w-[290px]
-          w-full
-          md:min-h-[calc(100vh-72px)]
-          md:fixed
-          left-0
-          top-[72px]
-          p-[20px]
-          md:p-[25px]
-          border-r border-white/10
-          bg-[#071416]/80
-          backdrop-blur-xl
-          z-[5]
-          transition-all duration-300
-          ${showFilter ? "h-auto" : "h-[65px] md:h-[calc(100vh-72px)]"}
-        `}
-      >
+<div
+  className={`
+    md:w-[280px]
+    lg:w-[290px]
+    w-full
+    md:min-h-[calc(100vh-76px)]
+    md:fixed
+    left-0
+    top-[76px]
+    p-[20px]
+    md:p-[25px]
+    border-r border-white/10
+    bg-[#071416]/80
+    backdrop-blur-xl
+    z-[5]
+    transition-all duration-300
+    ${showFilter ? "h-auto" : "h-[65px] md:h-[calc(100vh-76px)]"}
+  `}
+>
 
 
         {/* FILTER HEADING */}
