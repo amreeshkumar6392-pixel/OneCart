@@ -53,10 +53,10 @@ function UserContext({ children }) {
 
       setUserData(null);
 
-      console.log(
-        "Get Current User Error:",
-        error.response?.data || error.message
-      );
+  console.log("GET CURRENT USER ERROR");
+console.log("Status:", error.response?.status);
+console.log("Data:", error.response?.data);
+console.log("Message:", error.message);
 
       return null;
 
