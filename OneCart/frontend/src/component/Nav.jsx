@@ -22,21 +22,20 @@ import { shopDataContext } from "../Context/ShopContext";
 
 import axios from "axios";
 
-
 function Nav() {
   const navigate = useNavigate();
 
   const { userData, setUserData } = useContext(userDataContext);
   const { serverUrl } = useContext(authDataContext);
 
-  const {
-    cartCount,
-    search,
-    setSearch,
-    showSearch,
-    setShowSearch,
-  } = useContext(shopDataContext);
-
+const {
+  cartCount,
+  wishlist,
+  search,
+  setSearch,
+  showSearch,
+  setShowSearch,
+} = useContext(shopDataContext);
 
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -44,7 +43,6 @@ function Nav() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const [showMobileSearch, setShowMobileSearch] = useState(false);
-
 
   // =========================
   // LOGOUT
@@ -82,7 +80,6 @@ function Nav() {
     }
   };
 
-
   // =========================
   // MOBILE SEARCH
   // =========================
@@ -98,17 +95,15 @@ function Nav() {
     }
   };
 
-
   const clearMobileSearch = () => {
     setSearch("");
     setShowSearch(false);
   };
 
-
   return (
     <>
       {/* ================================================= */}
-      {/* PREMIUM DESKTOP NAVBAR */}
+      {/* DESKTOP NAVBAR */}
       {/* ================================================= */}
 
       <div
@@ -119,16 +114,14 @@ function Nav() {
           top-0
           left-0
           w-full
-          h-[72px]
+          h-[76px]
           px-[4%]
           z-[9999]
           items-center
-          justify-between
-          bg-[#081316]/95
-          backdrop-blur-xl
+          bg-white
           border-b
-          border-white/[0.08]
-          shadow-[0_8px_30px_rgba(0,0,0,0.25)]
+          border-gray-200
+          shadow-[0_2px_12px_rgba(0,0,0,0.08)]
         "
       >
 
@@ -139,17 +132,18 @@ function Nav() {
         <div
           onClick={() => navigate("/")}
           className="
-            w-[120px]
             flex
             items-center
             cursor-pointer
+            w-[150px]
+            flex-shrink-0
           "
         >
           <img
             src={logo}
             alt="OneCart"
             className="
-              w-[80px]
+              w-[85px]
               h-auto
               object-contain
             "
@@ -165,13 +159,8 @@ function Nav() {
           className="
             flex
             items-center
-            gap-[8px]
-            bg-white/[0.03]
-            border
-            border-white/[0.06]
-            rounded-full
-            px-[7px]
-            py-[6px]
+            h-full
+            gap-[5px]
           "
         >
 
@@ -180,16 +169,28 @@ function Nav() {
           <button
             onClick={() => navigate("/")}
             className="
-              px-[20px]
-              py-[9px]
-              rounded-full
-              text-[14px]
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
-              transition-all
-              duration-300
+              relative
+              h-full
+              px-[18px]
+              text-[13px]
+              font-semibold
+              tracking-[0.5px]
+              text-[#282c3f]
+              uppercase
               cursor-pointer
+              transition-all
+              duration-200
+              hover:text-[#ff3f6c]
+              after:absolute
+              after:bottom-0
+              after:left-[18px]
+              after:right-[18px]
+              after:h-[3px]
+              after:bg-[#ff3f6c]
+              after:scale-x-0
+              hover:after:scale-x-100
+              after:transition-transform
+              after:duration-200
             "
           >
             Home
@@ -201,16 +202,28 @@ function Nav() {
           <button
             onClick={() => navigate("/collections")}
             className="
-              px-[20px]
-              py-[9px]
-              rounded-full
-              text-[14px]
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
-              transition-all
-              duration-300
+              relative
+              h-full
+              px-[18px]
+              text-[13px]
+              font-semibold
+              tracking-[0.5px]
+              text-[#282c3f]
+              uppercase
               cursor-pointer
+              transition-all
+              duration-200
+              hover:text-[#ff3f6c]
+              after:absolute
+              after:bottom-0
+              after:left-[18px]
+              after:right-[18px]
+              after:h-[3px]
+              after:bg-[#ff3f6c]
+              after:scale-x-0
+              hover:after:scale-x-100
+              after:transition-transform
+              after:duration-200
             "
           >
             Collections
@@ -222,16 +235,28 @@ function Nav() {
           <button
             onClick={() => navigate("/about")}
             className="
-              px-[20px]
-              py-[9px]
-              rounded-full
-              text-[14px]
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
-              transition-all
-              duration-300
+              relative
+              h-full
+              px-[18px]
+              text-[13px]
+              font-semibold
+              tracking-[0.5px]
+              text-[#282c3f]
+              uppercase
               cursor-pointer
+              transition-all
+              duration-200
+              hover:text-[#ff3f6c]
+              after:absolute
+              after:bottom-0
+              after:left-[18px]
+              after:right-[18px]
+              after:h-[3px]
+              after:bg-[#ff3f6c]
+              after:scale-x-0
+              hover:after:scale-x-100
+              after:transition-transform
+              after:duration-200
             "
           >
             About
@@ -243,16 +268,28 @@ function Nav() {
           <button
             onClick={() => navigate("/contact")}
             className="
-              px-[20px]
-              py-[9px]
-              rounded-full
-              text-[14px]
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
-              transition-all
-              duration-300
+              relative
+              h-full
+              px-[18px]
+              text-[13px]
+              font-semibold
+              tracking-[0.5px]
+              text-[#282c3f]
+              uppercase
               cursor-pointer
+              transition-all
+              duration-200
+              hover:text-[#ff3f6c]
+              after:absolute
+              after:bottom-0
+              after:left-[18px]
+              after:right-[18px]
+              after:h-[3px]
+              after:bg-[#ff3f6c]
+              after:scale-x-0
+              hover:after:scale-x-100
+              after:transition-transform
+              after:duration-200
             "
           >
             Contact
@@ -262,16 +299,22 @@ function Nav() {
 
 
         {/* ========================= */}
+        {/* SPACER */}
+        {/* ========================= */}
+
+        <div className="flex-1"></div>
+
+
+        {/* ========================= */}
         {/* RIGHT SIDE */}
         {/* ========================= */}
 
         <div
           className="
-            w-[200px]
             flex
             items-center
             justify-end
-            gap-[6px]
+            gap-[8px]
           "
         >
 
@@ -293,9 +336,9 @@ function Nav() {
                 flex
                 items-center
                 justify-center
-                text-gray-300
-                hover:text-white
-                hover:bg-white/[0.08]
+                text-[#282c3f]
+                hover:text-[#ff3f6c]
+                hover:bg-[#f7f7f7]
                 transition-all
                 duration-300
                 cursor-pointer
@@ -331,15 +374,14 @@ function Nav() {
                   top-[55px]
                   w-[320px]
                   h-[52px]
-                  bg-[#101d20]
+                  bg-white
                   border
-                  border-white/[0.10]
-                  rounded-[12px]
+                  border-gray-200
+                  rounded-[10px]
                   flex
                   items-center
                   px-[14px]
-                  shadow-[0_15px_40px_rgba(0,0,0,0.45)]
-                  backdrop-blur-xl
+                  shadow-[0_8px_30px_rgba(0,0,0,0.15)]
                 "
               >
 
@@ -347,7 +389,7 @@ function Nav() {
                   className="
                     w-[20px]
                     h-[20px]
-                    text-[#9de7f2]
+                    text-[#ff3f6c]
                     flex-shrink-0
                   "
                 />
@@ -375,9 +417,9 @@ function Nav() {
                     bg-transparent
                     outline-none
                     px-[10px]
-                    text-white
+                    text-[#282c3f]
                     text-[14px]
-                    placeholder:text-gray-500
+                    placeholder:text-gray-400
                   "
                 />
 
@@ -386,9 +428,10 @@ function Nav() {
                   <button
                     onClick={() => setSearch("")}
                     className="
-                      text-gray-500
-                      hover:text-white
+                      text-gray-400
+                      hover:text-[#282c3f]
                       transition-all
+                      cursor-pointer
                     "
                   >
                     <IoClose
@@ -424,9 +467,9 @@ function Nav() {
                 flex
                 items-center
                 justify-center
-                text-gray-300
-                hover:text-white
-                hover:bg-white/[0.08]
+                text-[#282c3f]
+                hover:text-[#ff3f6c]
+                hover:bg-[#f7f7f7]
                 transition-all
                 duration-300
                 cursor-pointer
@@ -443,6 +486,8 @@ function Nav() {
             </button>
 
 
+            {/* PROFILE DROPDOWN */}
+
             {showProfile && (
               <div
                 className="
@@ -450,13 +495,12 @@ function Nav() {
                   right-0
                   top-[55px]
                   w-[190px]
-                  bg-[#101d20]
+                  bg-white
                   border
-                  border-white/[0.10]
-                  rounded-[12px]
+                  border-gray-200
+                  rounded-[10px]
                   overflow-hidden
-                  shadow-[0_15px_40px_rgba(0,0,0,0.45)]
-                  backdrop-blur-xl
+                  shadow-[0_8px_30px_rgba(0,0,0,0.15)]
                   py-[6px]
                 "
               >
@@ -471,11 +515,12 @@ function Nav() {
                     text-left
                     px-[17px]
                     py-[12px]
-                    text-gray-300
+                    text-[#282c3f]
                     text-[14px]
-                    hover:text-white
-                    hover:bg-white/[0.07]
+                    hover:text-[#ff3f6c]
+                    hover:bg-[#f7f7f7]
                     transition-all
+                    cursor-pointer
                   "
                 >
                   Profile
@@ -492,18 +537,19 @@ function Nav() {
                     text-left
                     px-[17px]
                     py-[12px]
-                    text-gray-300
+                    text-[#282c3f]
                     text-[14px]
-                    hover:text-white
-                    hover:bg-white/[0.07]
+                    hover:text-[#ff3f6c]
+                    hover:bg-[#f7f7f7]
                     transition-all
+                    cursor-pointer
                   "
                 >
                   Orders
                 </button>
 
 
-                <div className="h-[1px] bg-white/[0.07] my-[5px]"></div>
+                <div className="h-[1px] bg-gray-200 my-[5px]"></div>
 
 
                 <button
@@ -516,11 +562,12 @@ function Nav() {
                     text-left
                     px-[17px]
                     py-[12px]
-                    text-red-400
+                    text-red-500
                     text-[14px]
-                    hover:text-red-300
-                    hover:bg-red-500/[0.07]
+                    hover:text-red-600
+                    hover:bg-red-50
                     transition-all
+                    cursor-pointer
                   "
                 >
                   Logout
@@ -533,35 +580,62 @@ function Nav() {
 
 
           {/* ========================= */}
-          {/* WISHLIST */}
-          {/* ========================= */}
+      
+{/* WISHLIST */}
+{/* ========================= */}
 
-          <button
-            onClick={() => navigate("/wishlist")}
-            className="
-              w-[42px]
-              h-[42px]
-              rounded-full
-              flex
-              items-center
-              justify-center
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
-              transition-all
-              duration-300
-              cursor-pointer
-            "
-          >
+<button
+  onClick={() => navigate("/wishlist")}
+  className="
+    relative
+    w-[42px]
+    h-[42px]
+    rounded-full
+    flex
+    items-center
+    justify-center
+    text-[#282c3f]
+    hover:text-[#ff3f6c]
+    hover:bg-[#f7f7f7]
+    transition-all
+    duration-300
+    cursor-pointer
+  "
+>
 
-            <FaHeart
-              className="
-                w-[18px]
-                h-[18px]
-              "
-            />
+  <FaHeart
+    className="
+      w-[18px]
+      h-[18px]
+    "
+  />
 
-          </button>
+  {wishlist.length > 0 && (
+    <span
+      className="
+        absolute
+        top-[1px]
+        right-[0px]
+        min-w-[17px]
+        h-[17px]
+        px-[4px]
+        rounded-full
+        bg-[#ff3f6c]
+        text-white
+        text-[9px]
+        font-bold
+        flex
+        items-center
+        justify-center
+        border
+        border-white
+      "
+    >
+      {wishlist.length}
+    </span>
+  )}
+
+</button>
 
 
           {/* ========================= */}
@@ -578,9 +652,9 @@ function Nav() {
               flex
               items-center
               justify-center
-              text-gray-300
-              hover:text-white
-              hover:bg-white/[0.08]
+              text-[#282c3f]
+              hover:text-[#ff3f6c]
+              hover:bg-[#f7f7f7]
               transition-all
               duration-300
               cursor-pointer
@@ -605,15 +679,15 @@ function Nav() {
                   h-[17px]
                   px-[4px]
                   rounded-full
-                  bg-[#9de7f2]
-                  text-[#07191e]
+                  bg-[#ff3f6c]
+                  text-white
                   text-[9px]
                   font-bold
                   flex
                   items-center
                   justify-center
                   border
-                  border-[#081316]
+                  border-white
                 "
               >
                 {cartCount}
