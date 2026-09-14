@@ -30,6 +30,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AI from "./component/AI.jsx";
 
 function App() {
+
   // ================= USER CONTEXT =================
 
   const {
@@ -37,9 +38,11 @@ function App() {
     loading,
   } = useContext(userDataContext);
 
+
   // ================= LOCATION =================
 
   const location = useLocation();
+
 
   // ================= VALID PATHS =================
 
@@ -57,10 +60,12 @@ function App() {
     "/order",
   ];
 
+
   // ================= PRODUCT DETAIL =================
 
   const isProductDetailPage =
     location.pathname.startsWith("/productdetail/");
+
 
   // ================= NOT FOUND =================
 
@@ -68,13 +73,14 @@ function App() {
     !validPaths.includes(location.pathname) &&
     !isProductDetailPage;
 
-  // ======================================================
-  // AUTHENTICATION CHECK
-  // ======================================================
+
+  // ================= LOADING =================
 
   if (loading) {
+
     return (
       <div className="w-full min-h-screen bg-gradient-to-l from-[#141414] to-[#0c2025] flex items-center justify-center">
+
         <div className="text-center">
 
           <div className="w-[45px] h-[45px] border-[4px] border-[#ffffff30] border-t-[#9de7f2] rounded-full animate-spin mx-auto"></div>
@@ -84,17 +90,22 @@ function App() {
           </p>
 
         </div>
+
       </div>
     );
+
   }
+
 
   return (
     <>
+
       {/* ================================================= */}
       {/* NAVBAR */}
       {/* ================================================= */}
 
-      {userData && !isNotFoundPage && <Nav />}
+      {!isNotFoundPage && <Nav />}
+
 
       {/* ================================================= */}
       {/* TOAST */}
@@ -111,11 +122,13 @@ function App() {
         theme="dark"
       />
 
+
       {/* ================================================= */}
       {/* ROUTES */}
       {/* ================================================= */}
 
       <Routes>
+
 
         {/* ================================================= */}
         {/* LOGIN */}
@@ -135,6 +148,7 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
         {/* SIGNUP */}
         {/* ================================================= */}
@@ -144,7 +158,7 @@ function App() {
           element={
             userData ? (
               <Navigate
-                to={location.state?.from || "/"}
+                to="/"
                 replace
               />
             ) : (
@@ -153,134 +167,69 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
-        {/* HOME */}
+        {/* HOME - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/"
-          element={
-            userData ? (
-              <Home />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<Home />}
         />
 
+
         {/* ================================================= */}
-        {/* ABOUT */}
+        {/* ABOUT - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/about"
-          element={
-            userData ? (
-              <About />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<About />}
         />
 
+
         {/* ================================================= */}
-        {/* COLLECTIONS */}
+        {/* COLLECTIONS - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/collections"
-          element={
-            userData ? (
-              <Collections />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<Collections />}
         />
 
+
         {/* ================================================= */}
-        {/* PRODUCT */}
+        {/* PRODUCT - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/product"
-          element={
-            userData ? (
-              <Product />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<Product />}
         />
 
+
         {/* ================================================= */}
-        {/* CONTACT */}
+        {/* CONTACT - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/contact"
-          element={
-            userData ? (
-              <Contact />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<Contact />}
         />
 
+
         {/* ================================================= */}
-        {/* PRODUCT DETAIL */}
+        {/* PRODUCT DETAIL - PUBLIC */}
         {/* ================================================= */}
 
         <Route
           path="/productdetail/:productId"
-          element={
-            userData ? (
-              <ProductDetail />
-            ) : (
-              <Navigate
-                to="/login"
-                state={{
-                  from: location.pathname,
-                }}
-                replace
-              />
-            )
-          }
+          element={<ProductDetail />}
         />
 
+
         {/* ================================================= */}
-        {/* CART */}
+        {/* CART - PROTECTED */}
         {/* ================================================= */}
 
         <Route
@@ -300,8 +249,9 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
-        {/* WISHLIST */}
+        {/* WISHLIST - PROTECTED */}
         {/* ================================================= */}
 
         <Route
@@ -321,8 +271,9 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
-        {/* PLACE ORDER */}
+        {/* PLACE ORDER - PROTECTED */}
         {/* ================================================= */}
 
         <Route
@@ -342,8 +293,9 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
-        {/* ORDERS */}
+        {/* ORDERS - PROTECTED */}
         {/* ================================================= */}
 
         <Route
@@ -363,6 +315,7 @@ function App() {
           }
         />
 
+
         {/* ================================================= */}
         {/* NOT FOUND */}
         {/* ================================================= */}
@@ -374,11 +327,13 @@ function App() {
 
       </Routes>
 
+
       {/* ================================================= */}
       {/* AI ASSISTANT */}
       {/* ================================================= */}
 
       <AI />
+
     </>
   );
 }
